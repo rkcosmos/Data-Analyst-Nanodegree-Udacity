@@ -1,3 +1,7 @@
-# Data-Analyst-Nanodegree-Udacity
+# Data Analyst Nanodegree Udacity
 
-My projects in Data Analyst Nanodegree
+This repository contains my projects in Data Analyst Nanodegree.
+
+Starting: 01/07/2016
+
+Status: Ongoing
