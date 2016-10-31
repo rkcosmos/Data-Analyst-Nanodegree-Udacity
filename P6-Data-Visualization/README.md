@@ -12,15 +12,28 @@ It also shows the development of these values from 2007 to 2015. Tax and budget 
 
 ##Design
 
-The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. The line graph is included to exhibit tax/budget development throughout the years.  
+The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. The line graph is included to exhibit tax/budget development throughout the years. 
+
+After the feedbacks, I changed scientific notion in display into normal notation.
 
 ##Feedback
 
-commenter 1:
+Commenter 1:
 
-commenter 2:
+What questions do you have about the data?: In general, is the budget increasing? Are there certain regions receiving more budget than the others?
 
-commenter 3:
+What relationships do you notice?: I see budgets distributed broadly. The tax, however, is concentrated in the central and north regions.
+
+Main takeaway: Budgets are increasing. Tax are quite concentrated.
+
+Something I don't understand: The legend is displayed in scientific notation which is difficult to read. The line graph doesn't start at zero, making it difficult to compare scale.
+
+Commenter 2:
+
+Overall is good. I don't have any confusion in these data. It would be nice to have comparison with country average or region average in budget/tax ratio part. The visualization that group provinces into region would also be a good addition. Scientific notion in scale should be changed into normal number. Tax and budget per capita are also meaningful and should benefit the viewers. There should be a short list that show top ten for each categories.
+
+
+Commenter 3:
 
 
 ##Resources
