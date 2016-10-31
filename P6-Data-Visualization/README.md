@@ -8,7 +8,7 @@ Date: 31 October 2016
 ##Summary
 
 This visualisation shows tax, budget and budget/tax ratio distribution among provinces in Thailand. 
-It also shows the development of these value from year 2007 to 2015. Tax and budget units are in million baht.
+It also shows the development of these values from 2007 to 2015. Tax and budget units are in million baht.
 
 ##Design
 
