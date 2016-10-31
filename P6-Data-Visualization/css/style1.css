@@ -4,6 +4,14 @@
           text-align: center;
         }
 
+        h4 {
+          color: black;
+          position: absolute;
+          top: 570px;
+          left: 25%;
+          text-align: center;
+        }
+        
         .axis {
           font-family: arial;
           font-size: 0.6em;
@@ -35,14 +43,14 @@
 
         .years_dropdown {
           position: fixed;
-          top: 300px;
-          left: 120px;
+          top: 320px;
+          left: 100px;
         }
         
         .content_dropdown {
           position: fixed;
-          top: 270px;
-          left: 120px;
+          top: 350px;
+          left: 100px;
         }
 
         div.years_buttons div {
@@ -68,7 +76,7 @@
         div.tooltip {   
           position: absolute;           
           text-align: center;           
-          width: 130px;                  
+          width: 150px;                  
           height: 28px;                 
           padding: 2px;             
           font: 12px sans-serif;        
