@@ -1,36 +1,36 @@
     var color_step = 5;
-    var years = ["2558","2557","2556","2555","2554","2553","2552","2551","2550"];
-    var content_list = ["ratio","tax", "budget"];     
+    var years = ["2015","2014","2013","2012","2011","2010","2009","2008","2007"];
+    var content_list = ["budget/tax ratio","tax", "budget"];     
     var rateBytax = d3.map();
     var rateBybudget = d3.map();    
-    var current_content = "ratio";
-    var current_year = "2558";        
-         
+    var current_content = "budget/tax ratio";
+    var current_year = "2015";        
+    
 //////////// data in
     d3.queue()
         .defer(d3.json, "thailandWithName.json")
-        .defer(d3.csv, "/data/tax2.csv", function(d) {rateBytax.set(d.CHA_NE, 
-                                    {"2550":+d.tax2550, 
-                                    "2551":+d.tax2551,
-                                    "2552":+d.tax2552,
-                                    "2553":+d.tax2553,
-                                    "2554":+d.tax2554,
-                                    "2555":+d.tax2555,
-                                    "2556":+d.tax2556,
-                                    "2557":+d.tax2557,
-                                    "2558":+d.tax2558} 
+        .defer(d3.csv, "/data/data/tax2.csv", function(d) {rateBytax.set(d.CHA_NE, 
+                                    {"2007":+d.tax2007, 
+                                    "2008":+d.tax2008,
+                                    "2009":+d.tax2009,
+                                    "2010":+d.tax2010,
+                                    "2011":+d.tax2011,
+                                    "2012":+d.tax2012,
+                                    "2013":+d.tax2013,
+                                    "2014":+d.tax2014,
+                                    "2015":+d.tax2015} 
         );})
                          
-        .defer(d3.csv, "/data/expense2.csv", function(d) {rateBybudget.set(d.CHA_NE, 
-                                    {"2550":+d.ex2550, 
-                                    "2551":+d.ex2551,
-                                    "2552":+d.ex2552,
-                                    "2553":+d.ex2553,
-                                    "2554":+d.ex2554,
-                                    "2555":+d.ex2555,
-                                    "2556":+d.ex2556,
-                                    "2557":+d.ex2557,
-                                    "2558":+d.ex2558} 
+        .defer(d3.csv, "/data/data/expense2.csv", function(d) {rateBybudget.set(d.CHA_NE, 
+                                    {"2007":+d.ex2007, 
+                                    "2008":+d.ex2008,
+                                    "2009":+d.ex2009,
+                                    "2010":+d.ex2010,
+                                    "2011":+d.ex2011,
+                                    "2012":+d.ex2012,
+                                    "2013":+d.ex2013,
+                                    "2014":+d.ex2014,
+                                    "2015":+d.ex2015}  
         );})
         .await(ready);
 /////////// end of data in
@@ -42,27 +42,31 @@
         var fin_data = {};
         fin_data["tax"] = {};
         fin_data["budget"] = {};
-        fin_data["ratio"] = {};
+        fin_data["budget/tax ratio"] = {};
         geo_data.features.forEach(function(d) {
             fin_data["tax"][d.properties.CHA_NE] ={};
             fin_data["budget"][d.properties.CHA_NE] ={};
-            fin_data["ratio"][d.properties.CHA_NE] ={};
+            fin_data["budget/tax ratio"][d.properties.CHA_NE] ={};
             
             years.forEach(function(year) {
                 fin_data["tax"][d.properties.CHA_NE][year] = rateBytax.get(d.properties.CHA_NE)[year]; 
                 fin_data["budget"][d.properties.CHA_NE][year] = rateBybudget.get(d.properties.CHA_NE)[year];
-                fin_data["ratio"][d.properties.CHA_NE][year] = 
+                fin_data["budget/tax ratio"][d.properties.CHA_NE][year] = 
                     (rateBybudget.get(d.properties.CHA_NE)[year]/rateBytax.get(d.properties.CHA_NE)[year]).toFixed(3);
             });
         });
 
 ////////// end of combining data
       
-/////////// map section      
         d3.select("body")
             .append("h2")
-            .text("Tax and Budget Distribution");
-  
+            .text("Tax/Budget Ratio Distribution Among Provinces in Thailand");
+                  
+        d3.select("body")
+            .append("h4")
+            .text("Tax and budget units are in million baht. Data from: www.bb.go.th and www.rd.go.th");      
+            
+/////////// map section   
         var margin = 50,
             width = 500 - margin,
             height = 450 - margin;  
@@ -81,8 +85,9 @@
             .append('g');
  
         var select_year = d3.select("body")
-                .append("g")
+                .append("div")
                 .attr("class", "years_dropdown")
+                .html("year: ")
                 .append("select");
         
         var year_options = select_year
@@ -99,8 +104,9 @@
                 }); 
                 
         var select_content = d3.select("body")
-                .append("g")
+                .append("div")
                 .attr("class", "content_dropdown")
+                .html("content: ")
                 .append("select");
                 
         var content_options = select_content
@@ -116,7 +122,6 @@
                 updatemap(current_content,current_year); 
                 }); 
     
- 
         var mapText = svg.append("text")
             .attr("x",width/2)
             .attr("y",30)
@@ -133,12 +138,8 @@
         
         function updatemap (content ,year) {
 
-            mapText.text(content + "@year: " + year);                   
-/*
-            var max = d3.max(d3.entries(fin_data[content]), function(d) {
-                return d3.max(d3.values(d.value))
-            });
-*/
+            mapText.text(content + " @year: " + year);                   
+
             var all_value = [];
             d3.entries(fin_data[content]).forEach(function(d) {
                 all_value.push(d.value[year]);
@@ -216,8 +217,7 @@
               
 /////////////// End of update legion sub-section  
                   
-        };
-          
+        };       
         updatemap(current_content , current_year)       
      
 /////////////// end of map section 
@@ -241,34 +241,20 @@
             .attr("text-anchor","middle")
             .text("Tax by year: ");    
     
-        var time_extent = [2550,2558];
+        var time_extent = [2007,2015];
         var time_scale = d3.scaleLinear()
             .range([line_margin, line_width])
             .domain(time_extent);
         var time_axis = d3.axisBottom(time_scale).tickFormat(d3.format("d"));
  
- 
     function update_line(content, province) { 
      
-        lineText.text(content+ " by year: " + province);  
-/*
-        var line_data = [
-            {year: 2550, data: fin_data[content][province][2550]},
-            {year: 2551, data: fin_data[content][province][2551]},
-            {year: 2552, data: fin_data[content][province][2552]},
-            {year: 2553, data: fin_data[content][province][2553]},
-            {year: 2554, data: fin_data[content][province][2554]},
-            {year: 2555, data: fin_data[content][province][2555]},
-            {year: 2556, data: fin_data[content][province][2556]},
-            {year: 2557, data: fin_data[content][province][2557]},
-            {year: 2558, data: fin_data[content][province][2558]}   
-        ];
- */       
+        lineText.text(content+ ": " + province);  
+  
         var line_data = [];  
         years.forEach(function(d) {
             line_data.push({year: +d, data: +fin_data[content][province][+d]});
-        });
-        
+        });    
     
         var count_extent = d3.extent(line_data, function(d) {
             return d["data"];
@@ -278,13 +264,19 @@
             .domain(count_extent);
         var count_axis = d3.axisLeft(count_scale)
             .ticks(6);
-        debugger;
+  
         d3.selectAll('.x_axis').remove();
         d3.select(".lineplot")
             .append('g')
             .attr('class', 'x_axis')
             .attr('transform', "translate(0," + line_height + ")")
             .call(time_axis);
+            
+            
+        line_svg.append("text")
+            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+            .attr("transform", "translate("+ line_width/2 +","+(line_height+40)+")")  // centre below axis
+            .text("Year");
         
         d3.selectAll('.y_axis').remove();
         d3.select(".lineplot")
@@ -315,8 +307,7 @@
         var valueline = d3.line()
             .x(function(d) { return time_scale(d.year); })
             .y(function(d) { return count_scale(d.data); });
-
-        //circle.exit().remove();  
+  
          d3.selectAll('.line').remove();
          line_svg.append("path")
                 .data([line_data])
@@ -344,11 +335,9 @@
                     text_div.transition()        
                         .duration(500)      
                         .style("opacity", 0);   
-            });
-            
-        }; 
-    
+            });   
+        };  
         update_line(current_content, "Bangkok");
-/////////////  end of line chart section    
+/////////////  end of line chart section  
     }; 
 /////////////  end of ready function
