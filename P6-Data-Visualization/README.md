@@ -1,4 +1,4 @@
-# Data Visualization using d3.js
+# Interactive Data Visualization using d3.js
 As part of Udacity's Data Analyst Nanodegree
 
 By: Rakpong Kittinaradorn
@@ -16,11 +16,11 @@ The visualisation has two parts, choropleth map and line graph. The map uses col
 
 ##Feedback
 
-person 1:
+commenter 1:
 
-person 2:
+commenter 2:
 
-person 3:
+commenter 3:
 
 
 ##Resources
