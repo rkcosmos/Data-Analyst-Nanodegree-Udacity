@@ -17,8 +17,7 @@ It also shows the development of these values from 2007 to 2015. Tax and budget 
 
 The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. The line graph is included to exhibit tax/budget development throughout the years. 
 
-After the feedbacks, I changed scientific notion in display into normal notation. The map is now bigger. Top/bottom five provinces table in each categories are added. 
-
+After the feedbacks, I changed scientific notion in display into normal notation. The map is now bigger. Visulization for tax and budget per 1000 capita are added.
 ##Feedback
 
 Commenter 1:
