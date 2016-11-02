@@ -38,6 +38,10 @@ Overall is good. I don't have any confusion in these data. It would be nice to h
 
 Map is too small, it is hard to click province. If possible, percent increase/decrease from previous year should be shown. A table showing which province get the most budget is a good addition.
 
+##Summary
+
+Budget/Tax ratio in Big cities(those generate most tax) are low comparing to poorer provinces. Overall tax and budget are increasing in most provinces.
+
 ##Resources
 
 - javascript
