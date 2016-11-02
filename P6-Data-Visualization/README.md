@@ -1,12 +1,10 @@
 # Interactive Data Visualization using d3.js
 
-Not finished yet!
-
 As part of Udacity's Data Analyst Nanodegree
 
 By: Rakpong Kittinaradorn
 
-Date: 31 October 2016
+Date: 2 November 2016
 
 Link to visualization: https://bl.ocks.org/rkcosmos/raw/987e6568d4242a121736c3048dea288e/
 
