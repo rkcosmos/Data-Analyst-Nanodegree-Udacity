@@ -10,8 +10,7 @@ Link to visualization: https://bl.ocks.org/rkcosmos/raw/987e6568d4242a121736c304
 
 ##Summary
 
-This visualization shows tax, budget and budget/tax ratio distribution among provinces in Thailand. 
-It also shows the development of these values from 2007 to 2015. Tax and budget units are in million baht.
+Budget/Tax ratio in Big cities(those generate most tax) are low comparing to poorer provinces. Overall tax and budget are increasing in most provinces. With the exception of Bangkok, budget per capita is comparable in all provinces.
 
 ##Design
 
@@ -37,10 +36,6 @@ Overall is good. I don't have any confusion in these data. It would be nice to h
 ####Commenter 3:
 
 Map is too small, it is hard to click province. If possible, percent increase/decrease from previous year should be shown. A table showing which province get the most budget is a good addition.
-
-##Summary
-
-Budget/Tax ratio in Big cities(those generate most tax) are low comparing to poorer provinces. Overall tax and budget are increasing in most provinces.
 
 ##Resources
 
