@@ -16,7 +16,7 @@ Budget/Tax ratio in Big cities(those generate most tax) are low comparing to poo
 
 ##Design
 
-The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. I choose map to represent this information because the viewer can easily see spatial distribution along different region of Thailand. Tax and budget are generally incresing over time, so I use line graph to illustrate this time development.
+The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. I chose map to represent this information because the viewer can easily see spatial distribution along different regions of Thailand. Tax and budget are generally incresing over time, so I use line graph to illustrate this time development.
 
 After the feedbacks, I made changes in several points as follow: 
 
