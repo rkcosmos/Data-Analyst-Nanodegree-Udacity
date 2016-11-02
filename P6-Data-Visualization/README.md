@@ -37,6 +37,14 @@ Overall is good. I don't have any confusion in these data. It would be nice to h
 
 Map is too small, it is hard to click province. If possible, percent increase/decrease from previous year should be shown. A table showing which province get the most budget is a good addition.
 
+####Commenter 4:
+
+The visualization is great. Some minor suggestions:
+
+1. Make axes lines a little bit lighter
+2. Start y-axis from zero
+3. Add some textual description of the visualization
+
 ##Resources
 
 - javascript
