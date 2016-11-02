@@ -45,7 +45,7 @@ Overall is good. I don't have any confusion in these data. It would be nice to h
 
 ####Commenter 3:
 
-Map is too small, it is hard to click province. If possible, percent increase/decrease from previous year should be shown. A table showing which province get the most budget is a good addition.
+Map is too small, it is hard to click on provinces. If possible, percent increase/decrease from previous year should be shown. A table showing which province get the most budget is a good addition.
 
 ####Commenter 4:
 
