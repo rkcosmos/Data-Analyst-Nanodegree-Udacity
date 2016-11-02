@@ -23,7 +23,7 @@ After the feedbacks, I made changes in several points as follow:
 1. Scientific notion in display into normal notation. 
 2. The map is now bigger. 
 3. Visulization for tax and budget per 1000 capita are added.
-4. Textual description as added to convey storytelling.
+4. Textual description is added to convey storytelling.
 5. Axis is a little bit thinner.
 6. Y-axis is now starting from zero.
 
