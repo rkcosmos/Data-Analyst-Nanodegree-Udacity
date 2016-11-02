@@ -1,5 +1,7 @@
 # Interactive Data Visualization using d3.js
 
+Not finished yet!
+
 As part of Udacity's Data Analyst Nanodegree
 
 By: Rakpong Kittinaradorn
@@ -14,9 +16,16 @@ Budget/Tax ratio in Big cities(those generate most tax) are low comparing to poo
 
 ##Design
 
-The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. The line graph is included to exhibit tax/budget development throughout the years. 
+The visualisation has two parts, choropleth map and line graph. The map uses color hue as visual encoding to demonstrate tax/budget distribution among provinces in Thailand. I choose map to represent this information because the viewer can easily see spatial distribution along different region of Thailand. Tax and budget are generally incresing over time, so I use line graph to illustrate this time development.
 
-After the feedbacks, I changed scientific notion in display into normal notation. The map is now bigger. Visulization for tax and budget per 1000 capita are added.
+After the feedbacks, I made changes in several points as follow: 
+1. Scientific notion in display into normal notation. 
+2. The map is now bigger. 
+3. Visulization for tax and budget per 1000 capita are added.
+4. Textual description as added to convey storytelling.
+5. Axis is a little bit thinner.
+6. Y-axis is now starting from zero.
+
 ##Feedback
 
 ####Commenter 1:
