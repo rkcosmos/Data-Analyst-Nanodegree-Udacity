@@ -71,14 +71,21 @@
         d3.select("body")
             .append("h2")
             .text("Tax/Budget Ratio Distribution Among Provinces in Thailand");
-    
+        
+	// Add textual description of the visualization        
+	d3.select("body")
+            .append("div")
+            .attr('class', 'explanation')
+            .text("Even prosperity usually center at big cities like Bangkok and Chiangmai, budget distribution is emphasized on poorer provinces as can be seen by looking at budget/tax distribution. In 2015, Bangkok got only 66 baht for every 100 baht from tax, while Yala got 1700 baht.");      
+	    
 	// data source    
         d3.select("body")
-            .append("h4")
+            .append("div")
+            .attr('class', 'data_source')
             .text("Tax and budget units are in million baht. Data from: www.bb.go.th, www.rd.go.th, en.wikipedia.org/wiki/Provinces_of_Thailand");      
  
 /////////// map section   
-	var margin = 50,
+	    var margin = 50,
             width = 500 - margin,
             height = 450 - margin;  
         // Using mercator projection
@@ -88,15 +95,19 @@
       
         var path = d3.geoPath().projection(projection); 
   
-        var svg = d3.select("body")
-            .append("svg")
+        var main_graphic = d3.select("body")
+            .append("div")
+            .attr('class', 'graphic')
+            
+        var svg = d3.select(".graphic")
+            .append("div")
             .attr('class', 'map')
+            .append("svg") 
             .attr("width", width + margin)
-            .attr("height", height + margin)
-            .append('g');
+            .attr("height", height + margin);
  
 	// creating dropdown menu 
-        var select_year = d3.select("body")
+        var select_year = d3.select(".map")
                 .append("div")
                 .attr("class", "years_dropdown")
                 .html("year: ")
@@ -115,7 +126,7 @@
                 updatemap(current_content,current_year ); 
                 }); 
                 
-        var select_content = d3.select("body")
+        var select_content = d3.select(".map")
                 .append("div")
                 .attr("class", "content_dropdown")
                 .html("content: ")
@@ -134,7 +145,7 @@
                 updatemap(current_content,current_year); 
                 }); 
     
-	// Add explaination for map
+	// Add explanation for map
         var mapText = svg.append("text")
             .attr("x",width/2)
             .attr("y",30)
@@ -240,15 +251,16 @@
        
 ///////////////  line chart section  
     
-        var line_width = 400,
+        var line_width = 450,
             line_height = 400;  
             line_margin = 50;    
     
-        var line_svg = d3.select("body")
-              .append("svg")
+        var line_svg = d3.select(".graphic")
+              .append("div")
               .attr('class', 'lineplot')
-              .attr("width", line_width + margin)
-              .attr("height", line_height + margin)
+              .append("svg")
+              .attr("width", line_width + line_margin)
+              .attr("height", line_height + line_margin)
               .append('g');   
            
 	// title of line plot    
@@ -268,25 +280,27 @@
     function update_line(content, province) { 
      
         lineText.text(content+ ": " + province);  
-  
+        
+        // Prepare data for line plot
         var line_data = [];  
         years.forEach(function(d) {
             line_data.push({year: +d, data: +fin_data[content][province][+d]});
         });    
     
 	// add y-axis
-        var count_extent = d3.extent(line_data, function(d) {
+        var count_max = d3.max(line_data, function(d) {
             return d["data"];
         });  
+        var count_extent = [0, count_max]
         var count_scale = d3.scaleLinear()
             .range([line_height, line_margin])
-            .domain(count_extent);
+            .domain(count_extent).nice();
         var count_axis = d3.axisLeft(count_scale)
             .ticks(6);
   
 	// remove old axis and create a new one
         d3.selectAll('.x_axis').remove();
-        d3.select(".lineplot")
+        line_svg
             .append('g')
             .attr('class', 'x_axis')
             .attr('transform', "translate(0," + line_height + ")")
@@ -298,13 +312,13 @@
             .text("Year");
         
         d3.selectAll('.y_axis').remove();
-        d3.select(".lineplot")
+        line_svg
             .append('g')
             .attr('class', 'y_axis')
             .attr('transform', "translate(" + line_margin + ",0)")
             .call(count_axis);
 
-        d3.select('.lineplot')
+        line_svg
             .selectAll("circle")
             .data(line_data)
             .enter()
