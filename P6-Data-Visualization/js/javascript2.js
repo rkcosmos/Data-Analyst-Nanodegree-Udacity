@@ -9,8 +9,8 @@
     
 //////////// data in
     d3.queue()
-        .defer(d3.json, "/data/thailandWithName.json")
-        .defer(d3.csv, "/data/tax2.csv", function(d) {rateBytax.set(d.CHA_NE, 
+        .defer(d3.json, "data/thailandWithName.json")
+        .defer(d3.csv, "data/tax2.csv", function(d) {rateBytax.set(d.CHA_NE, 
                                     {"2007":+d.tax2007, 
                                     "2008":+d.tax2008,
                                     "2009":+d.tax2009,
@@ -21,7 +21,7 @@
                                     "2014":+d.tax2014,
                                     "2015":+d.tax2015} 
         );})               
-        .defer(d3.csv, "/data/expense2.csv", function(d) {rateBybudget.set(d.CHA_NE, 
+        .defer(d3.csv, "data/expense2.csv", function(d) {rateBybudget.set(d.CHA_NE, 
                                     {"2007":+d.ex2007, 
                                     "2008":+d.ex2008,
                                     "2009":+d.ex2009,
@@ -32,14 +32,14 @@
                                     "2014":+d.ex2014,
                                     "2015":+d.ex2015}  
         );})
-        .defer(d3.csv, "/data/population.csv", function(d) {rateBypopulation.set(d.CHA_NE, d.population);})
+        .defer(d3.csv, "data/population.csv", function(d) {rateBypopulation.set(d.CHA_NE, d.population);})
         .await(ready);
 /////////// end of data in
     
     function ready(err,geo_data) { 
         if(err) console.log("error fetching data");
       
-/////////// combine data
+/////////// combine data and rearrange them into dictionary ready for further use.
         var fin_data = {};
         fin_data["tax"] = {};
         fin_data["tax per 1000 capita"] = {};
@@ -67,25 +67,23 @@
 
 ////////// end of combining data
       
+	// Add title
         d3.select("body")
             .append("h2")
             .text("Tax/Budget Ratio Distribution Among Provinces in Thailand");
-                  
+        
+	// Add textual description of the visualization    
+	    
+	// data source    
         d3.select("body")
             .append("h4")
             .text("Tax and budget units are in million baht. Data from: www.bb.go.th, www.rd.go.th, en.wikipedia.org/wiki/Provinces_of_Thailand");      
-        /*
-        var table_section = d3.select('body').append('div').attr('class', 'table');
-        
-        var table_high = table_section.append('table'),
-		    thead_high = table_high.append('thead'),
-		    tbody_high = table_high.append('tbody');
-        */   
+ 
 /////////// map section   
-        var margin = 50,
+	var margin = 50,
             width = 500 - margin,
             height = 450 - margin;  
-    
+        // Using mercator projection
         var projection = d3.geoMercator()
             .scale(1500)
             .translate( [-2330, height+190 ]);  
@@ -99,6 +97,7 @@
             .attr("height", height + margin)
             .append('g');
  
+	// creating dropdown menu 
         var select_year = d3.select("body")
                 .append("div")
                 .attr("class", "years_dropdown")
@@ -137,12 +136,14 @@
                 updatemap(current_content,current_year); 
                 }); 
     
+	// Add explaination for map
         var mapText = svg.append("text")
             .attr("x",width/2)
             .attr("y",30)
             .attr("text-anchor","middle")
             .text("Tax Collection @year: ");
-           
+        
+	// enter geojson data
         var map = svg.selectAll('path')
             .data(geo_data.features)
             .enter()
@@ -155,11 +156,11 @@
 
             mapText.text(content + " @year: " + year);                   
 
+	    // quantize data range to translate information into color scale
             var all_value = [];
             d3.entries(fin_data[content]).forEach(function(d) {
                 all_value.push(d.value[year]);
             });    
-           
             var quantize = d3.scaleQuantile()
                 .domain(all_value)
                 .range(d3.range(color_step).map(function(i) { return "q" + i + "-" + color_step; }));               
@@ -167,10 +168,12 @@
             map.attr("class", function(d) { return quantize(fin_data[content][d.properties.CHA_NE][year]); })
                 .style("cursor", "pointer");  
 
+	    // create tooltip
             var text_div = d3.select("body").append("div")   
                 .attr("class", "tooltip")               
                 .style("opacity", 0);
   
+	    // add mouse interactivity
             map.on("mouseover", function(d) {      
                 text_div.transition()        
                     .duration(500)      
@@ -193,8 +196,7 @@
                 update_line(current_content, d.properties.CHA_NE);
             });  
         
-/////////// update legion sub-section
-  
+	    // legion sub-section
             var legendWidth = 20,
                 legendHeight = 20;                   
             var legend = svg.append("g").attr("class", "legend");
@@ -230,63 +232,8 @@
                 .attr("y", function(d, i) { return height - i * legendHeight - 0.2 * legendHeight;})
                 .text(function(d, i) { return legendData[i][0] + " - " +legendData[i][1]; });   
               
-/////////////// End of update legion sub-section  
-                  
-/////////////// Table Section                  
-	       /* 
-	        // The table generation function
-            function tabulate(data, columns) {
-                var table = d3.select("body").append("table")
-                    .attr("style", "margin-left: 250px"),
-                thead = table.append("thead"),
-                tbody = table.append("tbody");
-
-            // append the header row
-                thead.append("tr")
-                    .selectAll("th")
-                    .data(columns)
-                    .enter()
-                    .append("th")
-                    .text(function(column) { return column; });
-
-            // create a row for each object in the data
-                var rows = tbody.selectAll("tr")
-                    .data(data)
-                    .enter()
-                    .append("tr");
-
-            // create a cell in each row for each column
-                var cells = rows.selectAll("td")
-                    .data(function(row) {
-                        return columns.map(function(column) {
-                            return {column: column, value: row[column]};
-                        });
-                    })
-                    .enter()
-                    .append("td")
-                    .attr("style", "font-family: Courier") // sets the font style
-                        .html(function(d) { return d.value; });
-    
-                return table;
-            }
-	        
-	        var columns = ["province", content];
-	        
-	        
-	        //fin_data["budget/tax ratio"][province][year]
-	        
-	        
-            var table_data =  [
-                { "province" : "1", content : 45 },
-                { "province" : "2", content : 50 },
-	            { "province" : "3", content : 55 },
-	            { "province" : "4", content : 50 },
-	            { "province" : "5", content : 45 }
-            ];
-	        
-	        var table1 = tabulate(table_data, ["province", content])
-	            .attr('class', 'table');
-	       */        
+	    // End of update legion sub-section  
+               
         };       
         updatemap(current_content , current_year)       
      
@@ -335,6 +282,7 @@
         var count_axis = d3.axisLeft(count_scale)
             .ticks(6);
   
+	// remove old axis and create a new one
         d3.selectAll('.x_axis').remove();
         d3.select(".lineplot")
             .append('g')
@@ -360,6 +308,7 @@
             .enter()
             .append("circle");
    
+	// adding data point
         var circle = d3.selectAll('circle')
             .attr('cx', function(d) {
                 return time_scale(d['year']);
