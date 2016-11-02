@@ -9,7 +9,7 @@
     
 //////////// data in
     d3.queue()
-        .defer(d3.json, "thailandWithName.json")
+        .defer(d3.json, "/data/thailandWithName.json")
         .defer(d3.csv, "/data/tax2.csv", function(d) {rateBytax.set(d.CHA_NE, 
                                     {"2007":+d.tax2007, 
                                     "2008":+d.tax2008,
