@@ -36,13 +36,18 @@
           left: 10px;
           border:1px solid black;
         }
-           
+        
+        .special_mark {
+          stroke: red;
+          stroke-width: 2px;
+        }  
+         
         path {
           fill: none;
           stroke: black;
-          stroke-width: 1px;
+          stroke-width: 0.6px;
         }
-        
+
         .years_dropdown {
           position: absolute;
           top: 180px;
@@ -91,9 +96,10 @@
         .q1-5 { fill:#D1E79B; }
         .q0-5 { fill:#F3F4C8; }
 
+
 </style>
- 
-<script type="text/javascript">  
+<script type="text/javascript">
+
     var color_step = 5;
     var years = ["2015","2014","2013","2012","2011","2010","2009","2008","2007"];
     var content_list = ["budget/tax ratio","tax","tax per 1000 capita", "budget", "budget per 1000 capita"];     
@@ -103,7 +109,7 @@
     var current_content = "budget/tax ratio";
     var current_year = "2015";        
     
-//////////// data in
+    // data in
     d3.queue()
         .defer(d3.json, "thailandWithName.json")
         .defer(d3.csv, "tax.csv", function(d) {rateBytax.set(d.CHA_NE, 
@@ -130,12 +136,12 @@
         );})
         .defer(d3.csv, "population.csv", function(d) {rateBypopulation.set(d.CHA_NE, d.population);})
         .await(ready);
-/////////// end of data in
+    // end of data in
     
     function ready(err,geo_data) { 
         if(err) console.log("error fetching data");
       
-/////////// combine data and rearrange them into dictionary ready for further use.
+    // combine data and rearrange them into dictionary ready for further use.
         var fin_data = {};
         fin_data["tax"] = {};
         fin_data["tax per 1000 capita"] = {};
@@ -143,11 +149,11 @@
         fin_data["budget per 1000 capita"] = {};
         fin_data["budget/tax ratio"] = {};
         geo_data.features.forEach(function(d) {
-            fin_data["tax"][d.properties.CHA_NE] ={};
-            fin_data["tax per 1000 capita"][d.properties.CHA_NE] ={};
-            fin_data["budget"][d.properties.CHA_NE] ={};
-            fin_data["budget per 1000 capita"][d.properties.CHA_NE] ={};
-            fin_data["budget/tax ratio"][d.properties.CHA_NE] ={};
+            fin_data["tax"][d.properties.CHA_NE] = {};
+            fin_data["tax per 1000 capita"][d.properties.CHA_NE] = {};
+            fin_data["budget"][d.properties.CHA_NE] = {};
+            fin_data["budget per 1000 capita"][d.properties.CHA_NE] = {};
+            fin_data["budget/tax ratio"][d.properties.CHA_NE] = {};
             
             years.forEach(function(year) {
                 fin_data["tax"][d.properties.CHA_NE][year] = rateBytax.get(d.properties.CHA_NE)[year]; 
@@ -161,7 +167,7 @@
             });
         });
 
-////////// end of combining data
+    // end of combining data
       
 	// Add title
         d3.select("body")
@@ -180,11 +186,11 @@
             .attr('class', 'data_source')
             .text("Tax and budget units are in million baht. Data from: www.bb.go.th, www.rd.go.th, en.wikipedia.org/wiki/Provinces_of_Thailand");      
  
-/////////// map section   
+    // map section   
 	    var margin = 50,
             width = 500 - margin,
             height = 450 - margin;  
-        // Using mercator projection
+    // Using mercator projection
         var projection = d3.geoMercator()
             .scale(1500)
             .translate( [-2330, height+190 ]);  
@@ -253,15 +259,13 @@
             .data(geo_data.features)
             .enter()
             .append('path')
-            .attr('d', path)  
-            .style('stroke', 'black')
-            .style('stroke-width', 0.5);  
+            .attr('d', path);   
         
         function updatemap (content ,year) {
 
             mapText.text(content + " @year: " + year);                   
 
-	    // quantize data range to translate information into color scale
+	// quantize data range to translate information into color scale
             var all_value = [];
             d3.entries(fin_data[content]).forEach(function(d) {
                 all_value.push(d.value[year]);
@@ -270,15 +274,21 @@
                 .domain(all_value)
                 .range(d3.range(color_step).map(function(i) { return "q" + i + "-" + color_step; }));               
 
-            map.attr("class", function(d) { return quantize(fin_data[content][d.properties.CHA_NE][year]); })
+            map.attr("class", function(d) { 
+                if (d.properties.CHA_NE === "Bangkok" || d.properties.CHA_NE === "Yala") {
+                    return quantize(fin_data[content][d.properties.CHA_NE][year]) + " special_mark";
+                } else { 
+                    return quantize(fin_data[content][d.properties.CHA_NE][year]);
+                } 
+            })
                 .style("cursor", "pointer");  
 
-	    // create tooltip
+	// create tooltip
             var text_div = d3.select("body").append("div")   
                 .attr("class", "tooltip")               
                 .style("opacity", 0);
   
-	    // add mouse interactivity
+	// add mouse interactivity
             map.on("mouseover", function(d) {      
                 text_div.transition()        
                     .duration(500)      
@@ -297,12 +307,12 @@
                         .style("opacity", 0);   
                 });    
             
-	    // click map to update line plot
+	// click map to update line plot
             map.on("click", function(d) {
                 update_line(current_content, d.properties.CHA_NE);
             });  
         
-	    // legion sub-section
+	// legion sub-section
             var legendWidth = 20,
                 legendHeight = 20;                   
             var legend = svg.append("g").attr("class", "legend");
@@ -338,14 +348,14 @@
                 .attr("y", function(d, i) { return height - i * legendHeight - 0.2 * legendHeight;})
                 .text(function(d, i) { return legendData[i][0] + " - " +legendData[i][1]; });   
               
-	    // End of legion sub-section  
+	// End of legion sub-section  
                
         };       
         updatemap(current_content , current_year)       
      
-/////////////// end of map section 
+    // end of map section 
        
-///////////////  line chart section  
+    //  line chart section  
     
         var line_width = 450,
             line_height = 400;  
@@ -377,7 +387,7 @@
      
         lineText.text(content+ ": " + province);  
         
-        // Prepare data for line plot
+    // Prepare data for line plot
         var line_data = [];  
         years.forEach(function(d) {
             line_data.push({year: +d, data: +fin_data[content][province][+d]});
@@ -446,7 +456,7 @@
                 .attr("class", "line")
                 .attr("d", valueline);
           
-        // textbox 
+    // textbox 
         var text_div = d3.select("body").append("div")   
                 .attr("class", "tooltip")               
                 .style("opacity", 0);
@@ -470,8 +480,10 @@
             });   
         };  
         update_line(current_content, "Bangkok");
-/////////////  end of line chart section  
+    //  end of line chart section  
     }; 
+
+ 
 
 </script>
 

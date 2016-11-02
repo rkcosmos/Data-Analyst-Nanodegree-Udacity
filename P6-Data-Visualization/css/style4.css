@@ -1,0 +1,93 @@
+        h2 {
+          color: black;
+          text-align: center;
+        }
+
+        .data_source {
+          margin-left: 10%;
+          margin-right: 10%;
+          color: black;
+          position: absolute;
+          top: 620px;
+        }
+        
+        .explanation {
+          margin-left: 10%;
+          margin-right: 10%;
+          color: black;
+          position: absolute;
+          top: 80px;
+        }
+
+        .graphic {
+          margin-left: 5%;
+          margin-right: 5%;
+          top: 150px;
+          position: absolute;
+        }
+
+        .map {
+          position: absolute;
+          left: 10px;
+          border:1px solid black;
+        }
+        
+        .special_mark {
+          stroke: red;
+          stroke-width: 2px;
+        }  
+         
+        path {
+          fill: none;
+          stroke: black;
+          stroke-width: 0.6px;
+        }
+
+        .years_dropdown {
+          position: absolute;
+          top: 180px;
+          left: 20px;
+        }
+        
+        .content_dropdown {
+          position: absolute;
+          top: 220px;
+          left: 20px;
+        }
+        
+        .lineplot {
+          position: absolute;
+          left: 550px;
+          border:1px solid black;
+        }
+        
+        .tick {
+          fill: none;
+          stroke: black;
+        }
+
+        circle {
+          opacity: 0.4;
+          stroke: none;
+          cursor: pointer;
+        }
+ 
+        div.tooltip {   
+          position: absolute;           
+          text-align: center;           
+          width: 150px;                  
+          height: 42px;                 
+          padding: 2px;             
+          font: 12px sans-serif;        
+          background: lightsteelblue;   
+          border: 0px;      
+          border-radius: 8px;           
+          pointer-events: none;       
+        }
+
+        .q4-5 { fill:#6BC214; }
+        .q3-5 { fill:#8DCE41; }
+        .q2-5 { fill:#AFDB6E; }
+        .q1-5 { fill:#D1E79B; }
+        .q0-5 { fill:#F3F4C8; }
+
