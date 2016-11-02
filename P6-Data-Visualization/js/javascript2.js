@@ -72,7 +72,10 @@
             .append("h2")
             .text("Tax/Budget Ratio Distribution Among Provinces in Thailand");
         
-	// Add textual description of the visualization    
+	// Add textual description of the visualization        
+	d3.select("body")
+            .append("h4")
+            .text("Even prosperity usually center at big cities like Bangkok and Chiangmai, budget distributtion is emphasized on poorer provinces as can be seen by looking at budget/tax distribution. Bangkok got only 66 baht for every 100 baht from tax, while Yala got 1700 baht in 2016");      
 	    
 	// data source    
         d3.select("body")
@@ -192,6 +195,7 @@
                         .style("opacity", 0);   
                 });    
             
+	    // click map to update line plot
             map.on("click", function(d) {
                 update_line(current_content, d.properties.CHA_NE);
             });  
@@ -232,7 +236,7 @@
                 .attr("y", function(d, i) { return height - i * legendHeight - 0.2 * legendHeight;})
                 .text(function(d, i) { return legendData[i][0] + " - " +legendData[i][1]; });   
               
-	    // End of update legion sub-section  
+	    // End of legion sub-section  
                
         };       
         updatemap(current_content , current_year)       
@@ -251,13 +255,15 @@
               .attr("width", line_width + margin)
               .attr("height", line_height + margin)
               .append('g');   
-                  
+           
+	// title of line plot    
         var lineText = line_svg.append("text")
             .attr("x",line_width/2)
             .attr("y",30)
             .attr("text-anchor","middle")
             .text("Tax by year: ");    
     
+	// add x-axis
         var time_extent = [2007,2015];
         var time_scale = d3.scaleLinear()
             .range([line_margin, line_width])
@@ -273,6 +279,7 @@
             line_data.push({year: +d, data: +fin_data[content][province][+d]});
         });    
     
+	// add y-axis
         var count_extent = d3.extent(line_data, function(d) {
             return d["data"];
         });  
@@ -321,11 +328,13 @@
                     updatemap(content ,d['year']);
                 })
             .attr('fill', "red"); 
-               
+              
+	// add line
         var valueline = d3.line()
             .x(function(d) { return time_scale(d.year); })
             .y(function(d) { return count_scale(d.data); });
   
+	 // update line data
          d3.selectAll('.line').remove();
          line_svg.append("path")
                 .data([line_data])
@@ -358,5 +367,3 @@
         update_line(current_content, "Bangkok");
 /////////////  end of line chart section  
     }; 
-/////////////  end of ready function
-// ?table? http://bl.ocks.org/d3noob/473f0cf66196a008cf99
