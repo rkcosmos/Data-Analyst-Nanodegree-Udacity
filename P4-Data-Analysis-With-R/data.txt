@@ -1,0 +1,16 @@
+Score Rating of 18000 game from IGN
+
+Description
+a Dataset containing the score and other attributes of more than 18000 games. The variables are as follows:
+
+- X: this is just an index
+- url: url of game
+- title: title of game
+- score_phrase 
+- score
+- platform
+- genre
+- editors_choice: Y(selected as editor's choice) or N (not selected)
+- release_year
+- release_month
+- release_day

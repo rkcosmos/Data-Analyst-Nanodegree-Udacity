@@ -1,0 +1,410 @@
+Game Rating Exploration by Rakpong Kittinaradorn
+========================================================
+
+Date: 13 November 2016
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using
+# in your analysis in this code chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk.
+# This prevents the code from displaying in the knitted HTML output.
+# You should set echo=FALSE for all code chunks in your file.
+
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(GGally)
+
+```
+
+```{r echo=FALSE, Load_the_Data}
+# Load the Data
+setwd('~/Desktop/EDA_Course_Materials/project')
+game <- read.csv('ign.csv')
+game <- game[!game$release_year == '1970',] # this one is an outlier
+```
+
+This report explores game rating from IGN. Summary and structure of dataset are as follows.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(game)
+
+str(game)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+game <- within(game, rm(url, title, X))
+game$score_phrase <- ordered(game$score_phrase, 
+                             levels = c("Disaster", "Unbearable", "Painful",
+                                        "Awful", "Bad", "Mediocre", "Okay",
+                                        "Good", "Great", "Amazing",
+                                        "Masterpiece"))
+# theme for every plot
+mytheme <- theme(axis.text.x = element_text(colour="grey20",size=7,hjust=.5,vjust=.5,face="plain"),
+        axis.text.y = element_text(colour="grey20",size=7,angle=0,hjust=1,vjust=0,face="plain"),  
+        axis.title.x = element_text(colour="grey20",size=12,angle=0,hjust=.5,vjust=0,face="plain"),
+        axis.title.y = element_text(colour="grey20",size=12,angle=90,hjust=.5,vjust=.5,face="plain"),
+        plot.title = element_text(size = 16,hjust=0.5),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12))
+```
+
+# Univariate Plots Section
+```{r echo=FALSE, Univariate_Plots, message=FALSE, warning=FALSE}
+ggplot(aes(x=score_phrase), data = game) +
+  geom_bar(fill = I('#099DD9')) + mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=score), data = game) +
+  geom_bar(fill = I('#099DD9'), width = 0.5) +
+  scale_x_continuous(breaks = seq(0,10,0.5)) + 
+  mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=editors_choice), data = game) +
+  geom_bar(fill = I('#099DD9')) +
+  mytheme
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=score), data = subset(game,game$editors_choice == "Y")) +
+  geom_bar(fill = I('#099DD9')) +
+  mytheme
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = game, aes(x = release_year)) + 
+  geom_bar(fill = I('#099DD9')) +
+  scale_x_continuous(limits = c(1996,2016), breaks = seq(1995,2016,2)) +
+  mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = platform), 
+       data = subset(game , game$platform == names(sort(table(game$platform),decreasing=T))[1:10])) +
+  geom_bar(fill = I('#099DD9')) +
+  mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = genre), 
+       data = subset(game ,
+                     game$genre == names(sort(table(game$genre),decreasing=T))[1:10])) +
+  geom_bar(fill = I('#099DD9')) +
+  mytheme
+```
+
+# Univariate Analysis
+
+### What is the structure of your dataset?
+
+There are 18625 entries in this dataset with 11 features (X, title, url, score_phrase, score, platform, genre, editors_choice, release_year, release_month, release_day). X is just the index while title and url are specific to each game. I will not include these three features in the analysis. Release_year, release_month and release_day can be combined into one single feature called release_date. There is one factor feature that I order it myself, namely score_phrase. The levels are as follows.
+
+Disaster < Unbearable < Painful < Awful < Bad < Mediocre < Okay < Good < Great < Amazing < Masterpiece
+
+### What is/are the main feature(s) of interest in your dataset?
+
+I am interested in score, genre and platform. I would like to examine which platform should a gamer buy such that he/she can play a lot of high quality games.
+
+### What other features in the dataset do you think will help support your investigation into your feature(s) of interest?
+
+Release_date will support the investigation in determining time development of game and platform. While editors_choice will help me filter high quality games.
+
+### Did you create any new variables from existing variables in the dataset?
+
+Yes, I created release_date by combining release_year, release_month and release_day.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+game$release_date <- game$release_year + (game$release_month-1)/12 + (game$release_day-1)/(12*31)
+```
+
+### Of the features you investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?
+
+Most of the distributions are lightly skewed, so no transformation is required here.
+
+
+# Bivariate Plots Section
+
+```{r echo=FALSE, Bivariate_Plots, message=FALSE, warning=FALSE}
+ggplot(aes(x=release_year, fill = platform), 
+       data = subset(game , game$platform == names(sort(table(game$platform),decreasing=T))[1:10])) +
+  geom_bar() +
+  scale_x_continuous(breaks = seq(1995,2017,2)) +
+  mytheme
+
+# creating new dataframe with percentage of each platform
+game.platform.prop <- data.frame(prop.table(table(game$release_year, game$platform),1))
+platform_list <- c("PlayStation 4",names(sort(table(game$platform),decreasing=T))[1:10])
+
+ggplot(data = subset(game.platform.prop, Var2 %in% platform_list),
+       aes(Var1, Freq, fill = Var2)) + 
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(labels=scales::percent) +
+  scale_x_discrete(breaks = seq(1995,2017,2)) +
+  ggtitle("Most popular platform by percentage") +
+  mytheme
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = release_date, y = score), data = game) +
+  geom_point(alpha = 0.1, color = I('#099DD9')) +
+  scale_x_continuous(limits = c(1996,2017), breaks = seq(1996,2017,2)) +
+  scale_y_continuous(breaks = seq(0,10,1)) +
+  geom_smooth(color = 'Red' , linetype = 2) +
+  mytheme
+```
+
+Red dashed line is the average score.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = release_day, y = score), data = game) +
+  geom_point(alpha = 0.1, color = I('#099DD9')) +
+  scale_x_continuous(limits = c(0,31), breaks = seq(0,31,1)) +
+  scale_y_continuous(breaks = seq(0,10,1)) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'red', linetype = 1) +
+  mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x = release_month, y = score), data = game) +
+  geom_point(alpha = 0.1, color = I('#099DD9')) +
+  scale_x_continuous(limits = c(0,12), breaks = seq(0,12,1)) +
+  scale_y_continuous(breaks = seq(0,10,1)) +
+  geom_line(stat = 'summary',
+            fun.y = median,
+            color = 'red',
+            linetype = 1) +
+  geom_line(stat = 'summary',
+            fun.y = quantile,
+            fun.args = list(probs = .1),
+            color = 'red', linetype = 2) +
+  geom_line(stat = 'summary',
+            fun.y = quantile,
+            fun.args = list(probs = .9),
+            color = 'red', linetype = 2) +
+  mytheme
+```
+
+Solid line is median and dashed line are first and ninth quantile.
+
+
+```{r echo=FALSE}
+game.bymonth <- game %>%
+  group_by(release_month) %>%
+  summarise(score_median=median(score))
+  
+game.bymonth
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# create new dataframe with only top 10 genre
+data_genre <- subset(game , game$genre == 
+                       names(sort(table(game$genre), decreasing=T))[1:10])
+data_genre$genre <- factor(data_genre$genre)
+
+ggplot(aes(x = release_year, fill = genre), 
+       data = data_genre) +
+  geom_bar() +
+  scale_x_continuous(breaks = seq(1995,2017,2)) +
+  ggtitle("Number of top 10 most popular genre") +
+  mytheme
+
+# create dataframe with percentage of each genre
+game.genre.prop <- data.frame(prop.table(table(data_genre$release_year, data_genre$genre),1))
+ggplot(game.genre.prop, aes(Var1, Freq, fill = Var2)) + 
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(labels=scales::percent) +
+  scale_x_discrete(breaks = seq(1995,2017,2)) +
+  ggtitle("Top 10 most popular genre by percentage \n (ignore less popular genre)") +
+  mytheme
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+game.wide <- dcast(game,
+                   release_year ~ editors_choice,
+                   fun.aggregate = length)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = game.wide, aes(x=release_year, y=Y/(N+Y)*100)) + 
+  geom_line() + 
+  scale_x_continuous(limits = c(1996,2016)) +
+  labs(y = "Percentage of Editor's choice game") +
+  mytheme
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = game, aes(x = score, y = score_phrase)) +
+  geom_point(alpha = 0.1) +
+  mytheme
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# dataframe with number of unique platform for each year
+game.uniqueplatform <- game %>%
+  group_by(release_year,platform) %>%
+  summarise(unique_platform=n()) %>%
+  group_by(release_year) %>%
+  summarise(unique_platform=n())
+ggplot(data = game.uniqueplatform, aes(x=release_year,y=unique_platform)) +
+  geom_line(color="blue") +
+  scale_x_continuous(breaks = seq(1996,2016,2)) +
+  mytheme
+```
+
+The following table shows top-score genre with more than 100 games.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+game.genre <- game %>%
+  group_by(genre) %>%
+  summarise(genre_median_score=median(score),
+            number_of_game=n())
+game.genre<-game.genre[order(game.genre$genre_median_score,decreasing = T),] 
+
+head(subset(game.genre,number_of_game>=100))
+genre_list <- head(subset(game.genre,number_of_game>=100),10)$genre
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = subset(game, genre %in% as.vector.factor(genre_list)),
+                     aes(factor(genre), score)) +
+         geom_boxplot() +
+  mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = game, aes(x = editors_choice, y = score)) +
+       geom_boxplot() +
+  scale_y_continuous(breaks = seq(0,10,1)) +
+  mytheme
+```
+
+
+
+# Bivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?
+
+While some platforms have a good amount of games in recent year (ex. iPhone) and some are more popular in old day, PC and PlayStation Series always have consistent number of games throughout the period of interest. Game score does not depend on day release but it tends to increase slightly with year. The best month to release a game is September. The worst are January and December.
+
+### Did you observe any interesting relationships between the other features (not the main feature(s) of interest)?
+
+Percentage of editors_choice's game tends to increase with time. This is related to the uptrend in score with time. Number of gaming platform is increasing. Some of the top score games (score > 8) are not picked as the editors_choice, this suggest that the editors must have other criteria in picking their choice. 
+
+
+### What was the strongest relationship you found?
+
+Score and score_pharse are perfectly aligned with each other. This is because score_pharse is a categorical version of score.
+
+# Multivariate Plots Section
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#ggpairs(data = game[,c("score","release_date")])
+#ggpairs(game[,c("score","score_phrase","release_date","editors_choice")]) 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = subset(game , game$platform == 
+                       names(sort(table(game$platform), decreasing=T))[1:5]),
+       aes(x = release_year, y = score, color = platform)) +
+  geom_line(stat = 'summary', fun.y = median, linetype = 1) +
+  scale_x_continuous(breaks = seq(1996,2016,2)) +
+  mytheme
+
+ggplot(data = subset(game , game$platform == 
+                       c("PlayStation","PlayStation 2","PlayStation 3","PlayStation 4")),
+       aes(x = release_year, y = score, color = platform)) +
+  geom_line(stat = 'summary', fun.y = mean, linetype = 1) +
+  scale_x_continuous(breaks = seq(1996,2016,2)) +
+  mytheme
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = subset(game, genre %in% as.vector.factor(genre_list)),
+       aes(x = 3*round(release_year/3), y = score, color = genre)) +
+  geom_line(stat = 'summary', fun.y = mean, alpha = 0.8) +
+  labs(x = "Release Year") +
+  scale_x_continuous(breaks = seq(1996,2016,2)) +
+  mytheme
+```
+
+# Multivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the investigation. Were there features that strengthened each other in terms of looking at your feature(s) of interest?
+
+Most of the mean score in popular genre group are consistent except "Action, adventure" which is on decline from 1995 to 2007 and "RPG" which was rising rapidly in the period around 1995 to 1998. 
+
+### Were there any interesting or surprising interactions between features?
+
+Among PlayStation series, after the new version is released (ie. PlayStation 2,3,4), games for the old version (ie. PlayStation 1,2,3) usually perform better! 
+
+------
+
+# Final Plots and Summary
+
+### Plot One
+```{r echo=FALSE, Plot_One, message=FALSE, warning=FALSE}
+ggplot(data = game, aes(x = release_year)) + 
+  geom_bar(fill = I('#099DD9')) +
+  scale_x_continuous(limits = c(1996,2016), breaks = seq(1995,2016,2)) +
+  ggtitle("Total number of games") +
+  xlab("Release Year") +
+  ylab("Count") +
+  mytheme
+```
+
+### Description One
+
+Total number of games was rising from 1997 to 2008 and falling after 2008. This plot gives the overall view of the gaming industry throughout history.
+
+### Plot Two
+```{r echo=FALSE, Plot_Two, message=FALSE, warning=FALSE}
+ggplot(data = subset(game.platform.prop, Var2 %in% platform_list),
+       aes(Var1, Freq, fill = Var2)) + 
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(labels=scales::percent) +
+  scale_x_discrete(breaks = seq(1995,2017,2)) +
+  ggtitle("Most popular platform by percentage") +
+  xlab("Release Year") +
+  ylab("Percentage") +
+  scale_fill_discrete(name = "Platform") +
+  mytheme
+```
+
+### Description Two
+
+PC and PlayStation series are the most consistent platform in term of number of games. If gamers want to have many gaming options available, PC and PlayStation are their choice.
+
+### Plot Three
+```{r echo=FALSE, Plot_Three, message=FALSE, warning=FALSE}
+ggplot(data = subset(game, genre %in% as.vector.factor(genre_list)),
+       aes(x = 3*round(release_year/3), y = score, color = genre)) +
+  geom_line(stat = 'summary', fun.y = mean, alpha = 0.8) +
+  xlab("Release Year") +
+  ylab("Score") +
+  scale_x_continuous(breaks = seq(1996,2016,2)) +
+  ggtitle("Mean score of popular genre") +
+  mytheme
+```
+
+### Description Three
+
+Throughout the years, most of the mean score for each genre are quite constant. Except those related to RPG, they are on the rise. While those involved action are on decline.
+
+------
+
+# Reflection
+
+This dataset is about game rating from ign.com, a famous game website. It involves over 18000 game from 1996 to 2016. It spans most of the gaming platform and game genre available in this period. I start exploring this dataset by plotting frequancy of each variables. By doing this, I got the overall understanding of this dataset. Trend in gaming industry is understood in this period of investigation. Is is peaked in 2008 and has been declining since then. Next I start comparing two different variables bt mean of scatter plot, line plot, stacked bar plot and box plot. Evolution of game score, platform and genre are investigated in this period. Lastly I plot multivariable graph to examine three variables simultaneously. By exploring this dataset, trending in genre can also been seen. I can also see which platform is transcient and which stand over a test of time.
+
