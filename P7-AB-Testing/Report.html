@@ -2,7 +2,7 @@
 <html>
   <head>
       <meta charset="utf-8" />
-      <title>Report</title>
+      <title>README</title>
       <style>.markdown-preview:not([data-use-github-style]) { padding: 2em; font-size: 1.2em; color: rgb(171, 178, 191); overflow: auto; background-color: rgb(40, 44, 52); }
 .markdown-preview:not([data-use-github-style]) > :first-child { margin-top: 0px; }
 .markdown-preview:not([data-use-github-style]) h1, .markdown-preview:not([data-use-github-style]) h2, .markdown-preview:not([data-use-github-style]) h3, .markdown-preview:not([data-use-github-style]) h4, .markdown-preview:not([data-use-github-style]) h5, .markdown-preview:not([data-use-github-style]) h6 { line-height: 1.2; margin-top: 1.5em; margin-bottom: 0.5em; color: rgb(255, 255, 255); }
@@ -501,7 +501,7 @@ pre.editor-colors .fold-marker:after,
   </head>
   <body class='markdown-preview' data-use-github-style><h1 id="a-b-testing-report">A/B Testing Report</h1>
 <p><strong>By:</strong> Rakpong Kittinaradorn</p>
-<p><strong>Date:</strong> 17 November 2016</p>
+<p><strong>Date:</strong> 19 November 2016</p>
 <h2 id="experiment-design">Experiment Design</h2>
 <h4 id="metric-choice">Metric Choice</h4>
 <blockquote>
@@ -515,9 +515,10 @@ pre.editor-colors .fold-marker:after,
 <p><strong>Evaluation Metric:</strong> Gross conversion, Net conversion</p>
 <p>Gross conversion is the ratio of user who enroll in free trial versus number of user who click “start free trial”. Net conversion is the ratio of user who pay at least once versus number of user who click “start free trial”. Both ratio will be affected when we run the experiment and their changes are the key factors in determining whether to launch new feature or not.</p>
 <p>Retention is also a good candidate for an evaluation metric but it requires too much time to run the experiment. Thus it is excluded in this experiment.</p>
-<p>If the new free trial screener is effective, I expect gross conversion to be lower
+<p>User-IDs are generated when users enroll in free trial period. Number of user-IDs is not included in evaluation metrics because it contain the same information as gross conversion. Since all user have to click &quot;start free trial&quot; before enrollments.</p>
+<p>If the new free trial screener is efficient, I expect gross conversion to be lower
 because student will not start free trial program if they do not feel ready.
-On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should be approximately unchanged.</p>
+On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should not decrease.</p>
 <h4 id="measuring-standard-deviation">Measuring Standard Deviation</h4>
 <blockquote>
 <p>List the standard deviation of each of your evaluation metrics.</p>
@@ -565,8 +566,7 @@ indicate whether you think the analytic estimate would be comparable to the the 
 </table>
 <p>Standard error calculation (for 5000 cookies):</p>
 <pre class="editor-colors lang-python"><div class="line"><span class="source python"><span class="meta function-call python"><span>sqrt</span><span class="punctuation definition arguments begin python"><span>(</span></span><span class="meta function-call arguments python"><span>p</span><span class="keyword operator arithmetic python"><span>*</span></span><span>(</span><span class="constant numeric integer decimal python"><span>1</span></span><span class="keyword operator arithmetic python"><span>-</span></span><span>p</span><span>)</span><span class="keyword operator arithmetic python"><span>/</span></span><span>N</span></span><span class="punctuation definition arguments end python"><span>)</span></span></span></span></div></pre>
-<pre class="editor-colors lang-python"><div class="line"><span class="source python"><span>Gross</span><span>&nbsp;</span><span>conversion</span><span>:&nbsp;</span><span>se</span><span>&nbsp;</span><span class="keyword operator assignment python"><span>=</span></span><span>&nbsp;</span><span class="meta function-call python"><span>sqrt</span><span class="punctuation definition arguments begin python"><span>(</span></span><span class="meta function-call arguments python"><span class="constant numeric float python"><span>0.20625</span></span><span class="keyword operator arithmetic python"><span>*</span></span><span>(</span><span class="constant numeric integer decimal python"><span>1</span></span><span class="keyword operator arithmetic python"><span>-</span></span><span class="constant numeric float python"><span>0.20625</span></span><span>)</span><span class="keyword operator arithmetic python"><span>/</span></span><span>(</span><span class="constant numeric integer decimal python"><span>5000</span></span><span class="keyword operator arithmetic python"><span>*</span></span><span class="constant numeric float python"><span>0.08</span></span><span>)</span></span><span class="punctuation definition arguments end python"><span>)</span></span></span></span></div><div class="line"><span class="source python"><span>Net</span><span>&nbsp;</span><span>conversion</span><span>:&nbsp;</span><span>se</span><span>&nbsp;</span><span class="keyword operator assignment python"><span>=</span></span><span>&nbsp;</span><span class="meta function-call python"><span>sqrt</span><span class="punctuation definition arguments begin python"><span>(</span></span><span class="meta function-call arguments python"><span class="constant numeric float python"><span>0.1093125</span></span><span class="keyword operator arithmetic python"><span>*</span></span><span>(</span><span class="constant numeric integer decimal python"><span>1</span></span><span class="keyword operator arithmetic python"><span>-</span></span><span class="constant numeric float python"><span>0.1093125</span></span><span>)</span><span class="keyword operator arithmetic python"><span>/</span></span><span>(</span><span class="constant numeric integer decimal python"><span>5000</span></span><span class="keyword operator arithmetic python"><span>*</span></span><span class="constant numeric float python"><span>0.08</span></span><span>)</span></span><span class="punctuation definition arguments end python"><span>)</span></span></span></span></div></pre>
-<p>Results:</p>
+<pre class="editor-colors lang-text"><div class="line"><span class="text plain"><span class="meta paragraph text"><span>Gross&nbsp;conversion:&nbsp;se&nbsp;=&nbsp;sqrt(0.20625*(1-0.20625)/(5000*0.08))</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>Net&nbsp;conversion:&nbsp;se&nbsp;=&nbsp;sqrt(0.1093125*(1-0.1093125)/(5000*0.08))</span></span></span></div></pre><p>Results:</p>
 <blockquote>
 <p>Gross conversion: 0.0202</p>
 <p>Net Conversion: 0.0156</p>
@@ -586,7 +586,7 @@ indicate whether you think the analytic estimate would be comparable to the the 
 <p>Indicate what fraction of traffic you would divert to this experiment and, given this, how many days you would need to run the experiment.
 Give your reasoning for the fraction you chose to divert. How risky do you think this experiment would be for Udacity?</p>
 </blockquote>
-<p>In case Udacity does not have other experiment to run in the same time. I recommend running this experiment with full traffic to get the result as fast as possible. We need 18 days for this experiment. The risk will be minimal with short amount of time.</p>
+<p>In case Udacity does not have other experiment to run in the same time. I recommend running this experiment with full traffic to get the result as fast as possible. We need 18 days for this experiment. The experiment do not harm students in anyway, we just provide additional warning which they can also ignore if they do not agree. The experiment only correct data about hoe dedicated student expect to be. This is not sensitive data therefore I consider this harmless and low risk experiment. The risk will be further minimize by complete it in short amount of time in order to reduce possible confusing from student asking each other whether one see the new feature or not.</p>
 <h2 id="experiment-analysis">Experiment Analysis</h2>
 <h4 id="sanity-checks">Sanity Checks</h4>
 <blockquote>
@@ -599,8 +599,7 @@ Give your reasoning for the fraction you chose to divert. How risky do you think
 <p><strong>Click-through-probability on &quot;Start free trial&quot;:</strong> Here I will consider the difference
 in click-through-probability between control and experiment group. The observed value is [click in experiment]/[pageview in experiment] - [click in control]/[pageview in control].</p>
 <p>The standard error is calculated from pooled varience:</p>
-<pre class="editor-colors lang-python"><div class="line"><span class="source python"><span>p_pool</span><span>&nbsp;</span><span class="keyword operator assignment python"><span>=</span></span><span>&nbsp;</span><span class="string quoted double single-line python"><span class="punctuation definition string begin python"><span>&quot;</span></span><span>total&nbsp;click</span><span class="punctuation definition string end python"><span>&quot;</span></span></span><span class="keyword operator arithmetic python"><span>/</span></span><span class="string quoted double single-line python"><span class="punctuation definition string begin python"><span>&quot;</span></span><span>total&nbsp;pageview</span><span class="punctuation definition string end python"><span>&quot;</span></span></span></span></div><div class="line"><span class="source python"><span>&nbsp;</span></span></div><div class="line"><span class="source python"><span>se_pool</span><span>&nbsp;</span><span class="keyword operator assignment python"><span>=</span></span><span>&nbsp;</span><span class="meta function-call python"><span>sqrt</span><span class="punctuation definition arguments begin python"><span>(</span></span><span class="meta function-call arguments python"><span class="meta function-call python"><span>p_pool</span><span class="punctuation definition arguments begin python"><span>(</span></span><span class="meta function-call arguments python"><span class="constant numeric integer decimal python"><span>1</span></span><span class="keyword operator arithmetic python"><span>-</span></span><span>p_pool</span></span><span class="punctuation definition arguments end python"><span>)</span></span></span><span class="keyword operator arithmetic python"><span>/</span></span><span>(</span><span class="constant numeric integer decimal python"><span>1</span></span><span class="keyword operator arithmetic python"><span>/</span></span><span class="string quoted double single-line python"><span class="punctuation definition string begin python"><span>&quot;</span></span><span>pageview&nbsp;in&nbsp;control</span><span class="punctuation definition string end python"><span>&quot;</span></span></span><span>&nbsp;</span><span class="keyword operator arithmetic python"><span>+</span></span><span>&nbsp;</span><span class="constant numeric integer decimal python"><span>1</span></span><span class="keyword operator arithmetic python"><span>/</span></span><span class="string quoted double single-line python"><span class="punctuation definition string begin python"><span>&quot;</span></span><span>pageview&nbsp;in&nbsp;experiment</span><span class="punctuation definition string end python"><span>&quot;</span></span></span><span>)</span></span><span class="punctuation definition arguments end python"><span>)</span></span></span></span></div></pre>
-<p>The resulting confidence interval is (-0.001296, 0.001296). The observed value 0.000057 falls into the interval. I then <strong>pass</strong> this sanity check.</p>
+<pre class="editor-colors lang-text"><div class="line"><span class="text plain"><span class="meta paragraph text"><span>p_pool&nbsp;=&nbsp;&quot;total&nbsp;click&quot;/&quot;total&nbsp;pageview&quot;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>se_pool&nbsp;=&nbsp;sqrt(p_pool(1-p_pool)/(1/&quot;pageview&nbsp;in&nbsp;control&quot;&nbsp;+&nbsp;1/&quot;pageview&nbsp;in&nbsp;experiment&quot;))</span></span></span></div></pre><p>The resulting confidence interval is (-0.001296, 0.001296). The observed value 0.000057 falls into the interval. I then <strong>pass</strong> this sanity check.</p>
 <h4 id="result-analysis">Result Analysis</h4>
 <h6 id="effect-size-tests">Effect Size Tests</h6>
 <blockquote>
@@ -608,7 +607,7 @@ in click-through-probability between control and experiment group. The observed 
 </blockquote>
 <p>The calculation of 95% confidence interval is done by using pooled standard error.</p>
 <p><strong>Gross conversion:</strong> Confident interval = (-0.0291, -0.0120). The confident interval lies outside 0 and less than practical limit at 1%, so it is both <strong>statistical</strong> and <strong>practical</strong> significant.</p>
-<p><strong>Net conversion:</strong> Confident interval = (-0.0116, 0.0019). The result is <strong>insignificant</strong> both in term of statistics and practicality.</p>
+<p><strong>Net conversion:</strong> Confident interval = (-0.0116, 0.0019). The result is <strong>insignificant</strong> both in term of statistics and practicality. However the confident interval also went down below practical limit (-0.0075) which means there is some risks here for the profit to decrease.</p>
 <h6 id="sign-tests">Sign Tests</h6>
 <blockquote>
 <p>For each of your evaluation metrics, do a sign test using the day-by-day data, and report the p-value of the sign test and whether the result is statistically significant.</p>
@@ -619,13 +618,13 @@ in click-through-probability between control and experiment group. The observed 
 <blockquote>
 <p>State whether you used the Bonferroni correction, and explain why or why not. If there are any discrepancies between the effect size hypothesis tests and the sign tests, describe the discrepancy and why you think it arose.</p>
 </blockquote>
-<p>Both evaluation metric are correlated to each other. Using Bonferroni correction would be too conservative in this experiment. Moreover we also do sign test as an additional safe net for false positive.</p>
+<p>I’m not going to use Bonferroni correction because two evaluation metrics are not independent to each other. Using Bonferroni correction would be too conservative in this experiment. In addition, to reduce false possible(type I error) of the recommendation. I will recommend the new feature when <em>both</em> evaluation metrics match our expectation. Moreover we also do sign test as an additional safe net for false positive.</p>
 <p>The hypothesis tests and sign tests agree with each other so we can proceed in the recommendation with confident.</p>
 <h4 id="recommendation">Recommendation</h4>
 <blockquote>
 <p>Make a recommendation and briefly describe your reasoning.</p>
 </blockquote>
-<p>I recommend <strong>launch</strong> the new version because user experience will be better as gross conversion decreases significantly while company&#39;s profit stays constant (net conversion changes insignificantly).</p>
+<p>The experiment clearly show improve of user experience with the new feature both statistically and practically. There is some risk of declining profit though since confidence interval of net conversion cover the nagative area of practical limit. So I conclude it is a <strong>judgement call</strong> for the decision/policy maker. If they can accept small risk of decreasing profit in exchange to customer experience, then launch the change. Else if the financial situation is at its edge, I recommend keeping the old setting.</p>
 <h2 id="follow-up-experiment">Follow-Up Experiment</h2>
 <blockquote>
 <p>Give a high-level description of the follow up experiment you would run, what your hypothesis would be, what metrics you would want to measure, what your unit of diversion would be, and your reasoning for these choices.</p>

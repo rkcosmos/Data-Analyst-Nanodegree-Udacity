@@ -30,7 +30,7 @@ def count_k(file):
     return sorted_tag
 
 
-print check_unique_k("sample.osm")
+#print check_unique_k("sample.osm")
 
 print \
 

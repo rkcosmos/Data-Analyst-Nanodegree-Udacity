@@ -2,7 +2,7 @@
 
 **By:** Rakpong Kittinaradorn
 
-**Date:** 17 November 2016
+**Date:** 19 November 2016
 
 
 ## Experiment Design
@@ -27,9 +27,11 @@ Gross conversion is the ratio of user who enroll in free trial versus number of 
 
 Retention is also a good candidate for an evaluation metric but it requires too much time to run the experiment. Thus it is excluded in this experiment.
 
-If the new free trial screener is effective, I expect gross conversion to be lower
+User-IDs are generated when users enroll in free trial period. Number of user-IDs is not included in evaluation metrics because it contain the same information as gross conversion. Since all user have to click "start free trial" before enrollments.
+
+If the new free trial screener is efficient, I expect gross conversion to be lower
 because student will not start free trial program if they do not feel ready.
-On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should be approximately unchanged.
+On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should not decrease.
 
 #### Measuring Standard Deviation
 
@@ -55,7 +57,7 @@ Standard error calculation (for 5000 cookies):
 sqrt(p*(1-p)/N)
 ```
 
-```python
+```
 Gross conversion: se = sqrt(0.20625*(1-0.20625)/(5000*0.08))
 Net conversion: se = sqrt(0.1093125*(1-0.1093125)/(5000*0.08))
 ```
@@ -86,7 +88,7 @@ In order to test both metrics, the minimum pageview for this experiment is 68538
 >Indicate what fraction of traffic you would divert to this experiment and, given this, how many days you would need to run the experiment.
 >Give your reasoning for the fraction you chose to divert. How risky do you think this experiment would be for Udacity?
 
-In case Udacity does not have other experiment to run in the same time. I recommend running this experiment with full traffic to get the result as fast as possible. We need 18 days for this experiment. The risk will be minimal with short amount of time.
+In case Udacity does not have other experiment to run in the same time. I recommend running this experiment with full traffic to get the result as fast as possible. We need 18 days for this experiment. The experiment do not harm students in anyway, we just provide additional warning which they can also ignore if they do not agree. The experiment only correct data about hoe dedicated student expect to be. This is not sensitive data therefore I consider this harmless and low risk experiment. The risk will be further minimize by complete it in short amount of time in order to reduce possible confusing from student asking each other whether one see the new feature or not.
 
 ## Experiment Analysis
 #### Sanity Checks
@@ -107,7 +109,7 @@ in click-through-probability between control and experiment group. The observed 
 
 The standard error is calculated from pooled varience:
 
-```python
+```
 p_pool = "total click"/"total pageview"
 
 se_pool = sqrt(p_pool(1-p_pool)/(1/"pageview in control" + 1/"pageview in experiment"))
@@ -125,7 +127,7 @@ The calculation of 95% confidence interval is done by using pooled standard erro
 
 **Gross conversion:** Confident interval = (-0.0291, -0.0120). The confident interval lies outside 0 and less than practical limit at 1%, so it is both **statistical** and **practical** significant.
 
-**Net conversion:** Confident interval = (-0.0116, 0.0019). The result is **insignificant** both in term of statistics and practicality.
+**Net conversion:** Confident interval = (-0.0116, 0.0019). The result is **insignificant** both in term of statistics and practicality. However the confident interval also went down below practical limit (-0.0075) which means there is some risks here for the profit to decrease.
 
 
 ###### Sign Tests
@@ -140,7 +142,7 @@ The calculation of 95% confidence interval is done by using pooled standard erro
 
 >State whether you used the Bonferroni correction, and explain why or why not. If there are any discrepancies between the effect size hypothesis tests and the sign tests, describe the discrepancy and why you think it arose.
 
-Both evaluation metric are correlated to each other. Using Bonferroni correction would be too conservative in this experiment. Moreover we also do sign test as an additional safe net for false positive.
+I’m not going to use Bonferroni correction because two evaluation metrics are not independent to each other. Using Bonferroni correction would be too conservative in this experiment. In addition, to reduce false possible(type I error) of the recommendation. I will recommend the new feature when *both* evaluation metrics match our expectation. Moreover we also do sign test as an additional safe net for false positive.
 
 The hypothesis tests and sign tests agree with each other so we can proceed in the recommendation with confident.
 
@@ -149,7 +151,8 @@ The hypothesis tests and sign tests agree with each other so we can proceed in t
 
 >Make a recommendation and briefly describe your reasoning.
 
-I recommend **launch** the new version because user experience will be better as gross conversion decreases significantly while company's profit stays constant (net conversion changes insignificantly).
+The experiment clearly show improve of user experience with the new feature both statistically and practically. There is some risk of declining profit though since confidence interval of net conversion cover the nagative area of practical limit. So I conclude it is a **judgement call** for the decision/policy maker. If they can accept small risk of decreasing profit in exchange to customer experience, then launch the change. Else if the financial situation is at its edge, I recommend keeping the old setting.
+
 
 ## Follow-Up Experiment
 
