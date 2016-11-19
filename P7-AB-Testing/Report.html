@@ -518,7 +518,12 @@ pre.editor-colors .fold-marker:after,
 <p>User-IDs are generated when users enroll in free trial period. Number of user-IDs is not included in evaluation metrics because it contain the same information as gross conversion. Since all user have to click &quot;start free trial&quot; before enrollments.</p>
 <p>If the new free trial screener is efficient, I expect gross conversion to be lower
 because student will not start free trial program if they do not feel ready.
-On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should not decrease.</p>
+On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should not decrease. Our launching criteria are as follows:</p>
+<ol>
+<li>Gross conversion is both statistically and practically significant lower.</li>
+<li>We are sure that net conversion is not lower than our practical limit (-0.75%).</li>
+</ol>
+<p>We will launch the new feature if and only if both criteria are fulfilled.</p>
 <h4 id="measuring-standard-deviation">Measuring Standard Deviation</h4>
 <blockquote>
 <p>List the standard deviation of each of your evaluation metrics.</p>
@@ -571,7 +576,7 @@ indicate whether you think the analytic estimate would be comparable to the the 
 <p>Gross conversion: 0.0202</p>
 <p>Net Conversion: 0.0156</p>
 </blockquote>
-<p>Both analytical estimations should be comparable to empirical variations because the denominator (unit of analysis) of both is the number of cookies(pageview) which is the same as the unit of division. I would not suggest doing empirical study if budget is tight.</p>
+<p>Both analytical estimations should be comparable to empirical variations because the denominator (unit of analysis) of both is the number of cookies(pageview) which is the same as the unit of division. I would recommend <em>not</em> doing empirical study especially when budget is tight.</p>
 <h4 id="sizing">Sizing</h4>
 <h6 id="number-of-samples-vs-power">Number of Samples vs. Power</h6>
 <blockquote>
@@ -599,7 +604,7 @@ Give your reasoning for the fraction you chose to divert. How risky do you think
 <p><strong>Click-through-probability on &quot;Start free trial&quot;:</strong> Here I will consider the difference
 in click-through-probability between control and experiment group. The observed value is [click in experiment]/[pageview in experiment] - [click in control]/[pageview in control].</p>
 <p>The standard error is calculated from pooled varience:</p>
-<pre class="editor-colors lang-text"><div class="line"><span class="text plain"><span class="meta paragraph text"><span>p_pool&nbsp;=&nbsp;&quot;total&nbsp;click&quot;/&quot;total&nbsp;pageview&quot;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>se_pool&nbsp;=&nbsp;sqrt(p_pool(1-p_pool)/(1/&quot;pageview&nbsp;in&nbsp;control&quot;&nbsp;+&nbsp;1/&quot;pageview&nbsp;in&nbsp;experiment&quot;))</span></span></span></div></pre><p>The resulting confidence interval is (-0.001296, 0.001296). The observed value 0.000057 falls into the interval. I then <strong>pass</strong> this sanity check.</p>
+<pre class="editor-colors lang-text"><div class="line"><span class="text plain"><span class="meta paragraph text"><span>p_pool&nbsp;=&nbsp;&quot;total&nbsp;click&quot;/&quot;total&nbsp;pageview&quot;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>se_pool&nbsp;=&nbsp;sqrt(p_pool(1-p_pool)/(1/&quot;pageview&nbsp;in&nbsp;control&quot;&nbsp;+&nbsp;1/&quot;pageview&nbsp;in&nbsp;experiment&quot;))</span></span></span></div></pre><p>The resulting confidence interval is (-0.0013, 0.0013). The observed value 0.0001 falls into the interval. I then <strong>pass</strong> this sanity check.</p>
 <h4 id="result-analysis">Result Analysis</h4>
 <h6 id="effect-size-tests">Effect Size Tests</h6>
 <blockquote>
@@ -613,21 +618,42 @@ in click-through-probability between control and experiment group. The observed 
 <p>For each of your evaluation metrics, do a sign test using the day-by-day data, and report the p-value of the sign test and whether the result is statistically significant.</p>
 </blockquote>
 <p><strong>Gross conversion:</strong> p-value = 0.0026. It is less than 0.05, so I conclude it is <strong>statistically significant</strong>.</p>
-<p><strong>Net conversion:</strong> p-value = 0.6776. This is clearly <strong>not significant</strong>.</p>
+<p><strong>Net conversion:</strong> p-value = 0.6776. This is clearly <strong>statistically insignificant</strong>.</p>
 <h6 id="summary">Summary</h6>
 <blockquote>
 <p>State whether you used the Bonferroni correction, and explain why or why not. If there are any discrepancies between the effect size hypothesis tests and the sign tests, describe the discrepancy and why you think it arose.</p>
 </blockquote>
-<p>I’m not going to use Bonferroni correction because two evaluation metrics are not independent to each other. Using Bonferroni correction would be too conservative in this experiment. In addition, to reduce false possible(type I error) of the recommendation. I will recommend the new feature when <em>both</em> evaluation metrics match our expectation. Moreover we also do sign test as an additional safe net for false positive.</p>
+<p>Since I will recommend launching the new feature when &quot;both&quot; evaluation metrics match our criteria, our chance for false positive is already low. Using Bonferroni would further reduce chance of false positive in exchange of increasing chance of false positive. This is too conservative so I will not use Bonferroni correction in this experiment.</p>
 <p>The hypothesis tests and sign tests agree with each other so we can proceed in the recommendation with confident.</p>
 <h4 id="recommendation">Recommendation</h4>
 <blockquote>
 <p>Make a recommendation and briefly describe your reasoning.</p>
 </blockquote>
-<p>The experiment clearly show improve of user experience with the new feature both statistically and practically. There is some risk of declining profit though since confidence interval of net conversion cover the nagative area of practical limit. So I conclude it is a <strong>judgement call</strong> for the decision/policy maker. If they can accept small risk of decreasing profit in exchange to customer experience, then launch the change. Else if the financial situation is at its edge, I recommend keeping the old setting.</p>
+<p>The experiment clearly shows gross conversion is lower with the new feature. This suggests user experience might be better with the new setting. Our first criterion is fulfilled. However there is some risk of declining profit since confidence interval of net conversion cover the negative area of practical limit. This is unacceptable and therefore second criterion is not passed. Since I will recommend the new feature only when both criteria are passed, my recommendation for this experiment is <strong>not launching</strong> the new feature.</p>
 <h2 id="follow-up-experiment">Follow-Up Experiment</h2>
 <blockquote>
 <p>Give a high-level description of the follow up experiment you would run, what your hypothesis would be, what metrics you would want to measure, what your unit of diversion would be, and your reasoning for these choices.</p>
 </blockquote>
-<p>In this Data analyst nanodegree, there is an optional project at the beginning. It is a short project that should be doable in free trial period if the student have enough background. We could use that project as a criteria for recommending student to proceed in payment service. That is if student finish project in time, we recommend them to go on. Else we recommend them to take prerequisite course first. Unit of diversion will be enrolled student. The evaluation metric will be number of student who finished the degree divided by number of student who pay at least one month.</p></body>
+<p>In this Data Analyst Nanodegree, there is an optional project at the beginning. It is a short project that should be doable in free trial period if the student have enough background. We could use that project as a criterion for recommending student to proceed in payment service. That is if student finish project in time, we recommend them to go on. Else we recommend them to take prerequisite course first.</p>
+<p>My hypothesis is this will help student evaluate themselves before committing to a Nanodegree. By doing so student who is not ready will go to prerequisite course first. Those who actually proceed are the ready one thus increase the success rate of the program. Average revenue per student should also increase since committed student will keep learning/paying on longer period. Another important part of this hypothesis is that by adding this feature, we do not scare away students who could learn in this program and reduce the overall revenue of the degree.</p>
+<p>Unit of diversion: Enrolled student.</p>
+<p>Invariant metrics:</p>
+<ol>
+<li>Number of enrolled student: Number of students in control and experiment group should be invariant.</li>
+<li>Number of first project initialization: Student should at least try to see what project is about. Failing to do so means we cannot know if they have enough background or not. Number of project initialization should then be constant across control and experiment group.</li>
+</ol>
+<p>Evaluation metrics:</p>
+<ol>
+<li>Success rate: Number of student who finished the degree divided by number of student who pay at least one month.</li>
+<li>ARPA: Average revenue per student account generated from this Nanodegree.</li>
+<li>Total revenue: Total revenue generated from this Nanodegree.</li>
+</ol>
+<p>Launching criteria:</p>
+<ol>
+<li>Success rate increases.</li>
+<li>ARPA increases.</li>
+<li>Total revenue does not decrease.
+I will recommend this change if the first &quot;or&quot; second criteria are fulfilled &quot;and&quot; the third one is fulfilled. The third criterion is a must because we do not want to lose any profit. Either first or second is good. One indicates better user experience and success of program while another indicates financial improvement.</li>
+</ol>
+<p>Note: One obvious difficulty in this experiment is timeframe. It need at least 1 year to experiment since student needs many months to finish a Nanodegree. Fortunately the risk in doing this experiment is minimal. We do not collect any sensitive information in doing this experiment.</p></body>
 </html>

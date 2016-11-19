@@ -31,7 +31,12 @@ User-IDs are generated when users enroll in free trial period. Number of user-ID
 
 If the new free trial screener is efficient, I expect gross conversion to be lower
 because student will not start free trial program if they do not feel ready.
-On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should not decrease.
+On another hand, in order to enhance user experience without sacrificing financial benefit net conversion should not decrease. Our launching criteria are as follows:
+
+1. Gross conversion is both statistically and practically significant lower.
+2. We are sure that net conversion is not lower than our practical limit (-0.75%).
+
+We will launch the new feature if and only if both criteria are fulfilled.
 
 #### Measuring Standard Deviation
 
@@ -67,7 +72,7 @@ Results:
 
 > Net Conversion: 0.0156
 
-Both analytical estimations should be comparable to empirical variations because the denominator (unit of analysis) of both is the number of cookies(pageview) which is the same as the unit of division. I would not suggest doing empirical study if budget is tight.
+Both analytical estimations should be comparable to empirical variations because the denominator (unit of analysis) of both is the number of cookies(pageview) which is the same as the unit of division. I would recommend *not* doing empirical study especially when budget is tight.
 
 #### Sizing
 
@@ -115,7 +120,7 @@ p_pool = "total click"/"total pageview"
 se_pool = sqrt(p_pool(1-p_pool)/(1/"pageview in control" + 1/"pageview in experiment"))
 ```
 
-The resulting confidence interval is (-0.001296, 0.001296). The observed value 0.000057 falls into the interval. I then **pass** this sanity check.
+The resulting confidence interval is (-0.0013, 0.0013). The observed value 0.0001 falls into the interval. I then **pass** this sanity check.
 
 #### Result Analysis
 
@@ -136,13 +141,13 @@ The calculation of 95% confidence interval is done by using pooled standard erro
 
 **Gross conversion:** p-value = 0.0026. It is less than 0.05, so I conclude it is **statistically significant**.
 
-**Net conversion:** p-value = 0.6776. This is clearly **not significant**.
+**Net conversion:** p-value = 0.6776. This is clearly **statistically insignificant**.
 
 ###### Summary
 
 >State whether you used the Bonferroni correction, and explain why or why not. If there are any discrepancies between the effect size hypothesis tests and the sign tests, describe the discrepancy and why you think it arose.
 
-I’m not going to use Bonferroni correction because two evaluation metrics are not independent to each other. Using Bonferroni correction would be too conservative in this experiment. In addition, to reduce false possible(type I error) of the recommendation. I will recommend the new feature when *both* evaluation metrics match our expectation. Moreover we also do sign test as an additional safe net for false positive.
+Since I will recommend launching the new feature when "both" evaluation metrics match our criteria, our chance for false positive is already low. Using Bonferroni would further reduce chance of false positive in exchange of increasing chance of false positive. This is too conservative so I will not use Bonferroni correction in this experiment.
 
 The hypothesis tests and sign tests agree with each other so we can proceed in the recommendation with confident.
 
@@ -151,11 +156,31 @@ The hypothesis tests and sign tests agree with each other so we can proceed in t
 
 >Make a recommendation and briefly describe your reasoning.
 
-The experiment clearly show improve of user experience with the new feature both statistically and practically. There is some risk of declining profit though since confidence interval of net conversion cover the nagative area of practical limit. So I conclude it is a **judgement call** for the decision/policy maker. If they can accept small risk of decreasing profit in exchange to customer experience, then launch the change. Else if the financial situation is at its edge, I recommend keeping the old setting.
-
+The experiment clearly shows gross conversion is lower with the new feature. This suggests user experience might be better with the new setting. Our first criterion is fulfilled. However there is some risk of declining profit since confidence interval of net conversion cover the negative area of practical limit. This is unacceptable and therefore second criterion is not passed. Since I will recommend the new feature only when both criteria are passed, my recommendation for this experiment is **not launching** the new feature.
 
 ## Follow-Up Experiment
 
 >Give a high-level description of the follow up experiment you would run, what your hypothesis would be, what metrics you would want to measure, what your unit of diversion would be, and your reasoning for these choices.
 
-In this Data analyst nanodegree, there is an optional project at the beginning. It is a short project that should be doable in free trial period if the student have enough background. We could use that project as a criteria for recommending student to proceed in payment service. That is if student finish project in time, we recommend them to go on. Else we recommend them to take prerequisite course first. Unit of diversion will be enrolled student. The evaluation metric will be number of student who finished the degree divided by number of student who pay at least one month.
+In this Data Analyst Nanodegree, there is an optional project at the beginning. It is a short project that should be doable in free trial period if the student have enough background. We could use that project as a criterion for recommending student to proceed in payment service. That is if student finish project in time, we recommend them to go on. Else we recommend them to take prerequisite course first.
+
+My hypothesis is this will help student evaluate themselves before committing to a Nanodegree. By doing so student who is not ready will go to prerequisite course first. Those who actually proceed are the ready one thus increase the success rate of the program. Average revenue per student should also increase since committed student will keep learning/paying on longer period. Another important part of this hypothesis is that by adding this feature, we do not scare away students who could learn in this program and reduce the overall revenue of the degree.
+
+Unit of diversion: Enrolled student.
+
+Invariant metrics:
+1. Number of enrolled student: Number of students in control and experiment group should be invariant.
+2. Number of first project initialization: Student should at least try to see what project is about. Failing to do so means we cannot know if they have enough background or not. Number of project initialization should then be constant across control and experiment group.
+
+Evaluation metrics:
+1. Success rate: Number of student who finished the degree divided by number of student who pay at least one month.
+2. ARPA: Average revenue per student account generated from this Nanodegree.
+3. Total revenue: Total revenue generated from this Nanodegree.
+
+Launching criteria:
+1. Success rate increases.
+2. ARPA increases.
+3. Total revenue does not decrease.
+I will recommend this change if the first "or" second criteria are fulfilled "and" the third one is fulfilled. The third criterion is a must because we do not want to lose any profit. Either first or second is good. One indicates better user experience and success of program while another indicates financial improvement.
+
+Note: One obvious difficulty in this experiment is timeframe. It need at least 1 year to experiment since student needs many months to finish a Nanodegree. Fortunately the risk in doing this experiment is minimal. We do not collect any sensitive information in doing this experiment.
