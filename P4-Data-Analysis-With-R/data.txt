@@ -14,3 +14,6 @@ a Dataset containing the score and other attributes of more than 18000 games. Th
 - release_year
 - release_month
 - release_day
+
+Reference:
+https://www.kaggle.com/egrinstein/20-years-of-games
