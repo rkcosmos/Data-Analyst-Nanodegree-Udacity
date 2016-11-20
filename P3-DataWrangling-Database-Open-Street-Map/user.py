@@ -23,4 +23,4 @@ def process_map(filename):
 
     return users
 
-print len(process_map("sample.osm"))
+print len(process_map("bangkok_thailand.osm"))

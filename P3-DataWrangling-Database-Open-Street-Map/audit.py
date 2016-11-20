@@ -52,14 +52,6 @@ def audit(osmfile):
 
     osm_file.close()
     return [street_types1, street_types2]
-'''
-def update_name(name, mapping):
-    m = street_type_re.search(name)
-    if m:
-        street_type = m.group()
-        if street_type not in expected:
-            name = re.sub(street_type_re, mapping[street_type], name)
-    return name
-'''
-st_types = audit("sample.osm")[0]
+
+st_types = audit("bangkok_thailand.osm")[0]
 pprint.pprint(dict(st_types))

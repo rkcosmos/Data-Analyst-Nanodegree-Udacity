@@ -50,5 +50,5 @@ def process_map(filename):
 
     return keys
 
-keys = process_map('sample.osm')
+keys = process_map('bangkok_thailand.osm')
 pprint.pprint(keys)

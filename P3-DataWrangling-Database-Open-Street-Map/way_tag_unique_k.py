@@ -34,7 +34,7 @@ def count_k(file):
 
 print \
 
-print count_k("sample.osm")
+print count_k("bangkok_thailand.osm")
 
 '''
 most of streets are tagged with 'highway'

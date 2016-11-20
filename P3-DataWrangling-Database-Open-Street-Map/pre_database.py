@@ -164,7 +164,7 @@ import cerberus
 
 import schema
 
-OSM_PATH = "sample.osm"
+OSM_PATH = "bangkok_thailand.osm"
 
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
@@ -176,6 +176,53 @@ LOWER_COLON = re.compile(r'^([a-z]|_)+:([a-z]|_)+')
 PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
 
 SCHEMA = schema.schema
+
+# ================================================== #
+#               Update Functions                     #
+# ================================================== #
+
+# mapping for abbreviation at the end of words
+mapping1 = {"St": "Street",
+            "St.": "Street",
+            "Rd.": "Road",
+            "Rd": "Road",
+            "rd": "Road",
+            "rd.": "Road",
+            "Ave": "Avenue",
+            "Ave.": "Avenue"
+            }
+
+# mapping for transliteration: Thai word is usually at the first element while English translation has to be added at the end
+mapping2 = {"thanon": "Road",
+            "Thanon": "Road",
+            "Wat": "Temple"
+            }
+
+def update_name(word_in, mapping1, mapping2):
+    name_list = word_in.replace(')','').replace(' (',';').replace('(',';').split(';')
+    for i, name in enumerate(name_list):
+        parts = name.split(' ')
+        if parts[-1] in mapping1:
+            parts[-1] = mapping1[parts[-1]]
+        if parts[0] in mapping2:
+            parts.append(mapping2[parts[0]])
+            parts.pop(0)
+        name_list[i] = " ".join(parts)
+        if i != 0:
+            name_list[i] += ')'
+    word_out = " (".join(name_list)
+    return word_out
+
+def is_postcode(elem):
+    return (elem.attrib['k'] == "addr:postcode")
+
+def update_postcode(word_in):
+    word_out = re.match(r'^[0-9]{5}',word_in).group(0)
+    return word_out
+
+# ================================================== #
+#               Shape Function                       #
+# ================================================== #
 
 # Make sure the fields order in the csvs matches the column order in the sql table schema
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
@@ -203,7 +250,13 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             att_dict = {}
             tags.append(att_dict)
             att_dict["id"] = element.get("id")
-            att_dict["value"] = child.get("v")
+            if is_postcode(child):
+                try:
+                    att_dict["value"] = update_postcode(child.get("v"))
+                except:
+                    att_dict["value"] = child.get("v")
+            else:
+                att_dict["value"] = update_name(child.get("v"),mapping1,mapping2)
             if ":" in child.get("k"):
                 att_dict["type"] = re.search(find_before, child.get("k")).group(0)
                 att_dict["key"] = re.search(find_after, child.get("k")).group(1)
@@ -224,7 +277,13 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             att_dict = {}
             tags.append(att_dict)
             att_dict["id"] = element.get("id")
-            att_dict["value"] = child.get("v")
+            if is_postcode(child):
+                try:
+                    att_dict["value"] = update_postcode(child.get("v"))
+                except:
+                    att_dict["value"] = child.get("v")
+            else:
+                att_dict["value"] = update_name(child.get("v"),mapping1,mapping2)
             if ":" in child.get("k"):
                 att_dict["type"] = re.search(find_before, child.get("k")).group(0)
                 att_dict["key"] = re.search(find_after, child.get("k")).group(1)

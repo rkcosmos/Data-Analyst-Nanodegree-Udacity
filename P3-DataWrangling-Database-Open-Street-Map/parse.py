@@ -15,4 +15,4 @@ def count_tags(filename):
             tags[member.tag] = 1
     return tags
 
-print count_tags("sample.osm")
+print count_tags("bangkok_thailand.osm")
