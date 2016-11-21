@@ -3,7 +3,7 @@
 
 **By:** Rakpong Kittinaradorn
 
-**Date:** 18 November 2016
+**Date:** 21 November 2016
 
 
 ## Map area
@@ -35,7 +35,7 @@ This area is my hometown and also one of the best place in the world for food lo
 
 ## Problems Encountered in Map Data
 
-The whole dataset is large (~360 Mb), so I sample it for preliminary exploration. After running parse.py, way_tag_unique_k.py, investigate_tag.py and looking into sample.osm, I found 3 main problems needed to be addressed before import it into the database.
+The whole dataset is large (~360 Mb), so I sample it for preliminary exploration. After running parse.py, way_tag_unique_k.py, investigate_tag.py and looking into sample.osm, I found 4 main problems needed to be addressed before import it into the database.
 
 * Inconsistent translation and transliteration from Thai to English (ex. Temple vs. Wat (transliteration of Temple (วัด))
 
@@ -242,10 +242,10 @@ taoist|8
 
 ## Additional Ideas
 
-#### Guideline for transliteration
+#### Guideline for transliteration for more consistency
 
-As I have seen inconsistencies between transliteration and translation, it would be nice if Open Street Map can provide some guidelines about this issue to the contributors. This would make data cleaner from the source level.
+As I have seen inconsistencies between transliteration and translation, it would be nice if Open Street Map can provide some guidelines about this issue to the contributors. Showing a small tip such as "always use translation instead of transliteration when applicable" to the contributors in non-english area map would do the job. This would make data cleaner from the source level. Doing this however might drive some contributors into translate every possible things. Some words like proper name should not be translated though. For example consider the word "Thanon Ratchawithi" (Thanon = road, Ratcha = royal, Withi = way), 100% percent transliteration would be "Thanon Ratchawithi", while 100% translation would be "Royalway Road" which is not understandable even for Thai people.  We can circumvent this by also giving them some examples of what should be translated and what should not.
 
 ## Conclusion
 
-The information in Open Street Map is rich but it is far from complete. As Indian cuisine comes at the third place, I think the distribution of the contributor might not sparse enough. To gather more information, a game like Pokemon Go might help motivating local people to walk around and help completing map in process.
+The information in Open Street Map is rich but it is far from complete. As Indian cuisine comes at the third place, I think the distribution of the contributor might not sparse enough. To gather more information, a game like Pokemon Go might be able to help us. If we can create a game similar to Pokemon Go where people have to walk around the city, register and confirm point of interests (ex. by answering question like: is this a restaurant or not?, what food do they sell here?), the app can then collects crowdsourced data and send back to complete the map. The game has to ask questions in a subtle way though such that game is fun enough to play.

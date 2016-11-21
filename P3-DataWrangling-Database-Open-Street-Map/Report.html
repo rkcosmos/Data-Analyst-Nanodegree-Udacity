@@ -502,7 +502,7 @@ pre.editor-colors .fold-marker:after,
   <body class='markdown-preview' data-use-github-style><h1 id="open-street-map-">Open Street Map:</h1>
 <h3 id="case-study-for-data-wrangling-and-sql-database">Case study for data wrangling and SQL database</h3>
 <p><strong>By:</strong> Rakpong Kittinaradorn</p>
-<p><strong>Date:</strong> 18 November 2016</p>
+<p><strong>Date:</strong> 21 November 2016</p>
 <h2 id="map-area">Map area</h2>
 <p>Bangkok, Thailand</p>
 <p><a href="https://www.openstreetmap.org/relation/92277#map=10/13.5862/100.6332">https://www.openstreetmap.org/relation/92277#map=10/13.5862/100.6332</a></p>
@@ -528,7 +528,7 @@ pre.editor-colors .fold-marker:after,
 </ul>
 </blockquote>
 <h2 id="problems-encountered-in-map-data">Problems Encountered in Map Data</h2>
-<p>The whole dataset is large (~360 Mb), so I sample it for preliminary exploration. After running parse.py, way_tag_unique_k.py, investigate_tag.py and looking into sample.osm, I found 3 main problems needed to be addressed before import it into the database.</p>
+<p>The whole dataset is large (~360 Mb), so I sample it for preliminary exploration. After running parse.py, way_tag_unique_k.py, investigate_tag.py and looking into sample.osm, I found 4 main problems needed to be addressed before import it into the database.</p>
 <ul>
 <li><p>Inconsistent translation and transliteration from Thai to English (ex. Temple vs. Wat (transliteration of Temple (วัด))</p>
 </li>
@@ -697,8 +697,8 @@ pre.editor-colors .fold-marker:after,
 </tbody>
 </table>
 <h2 id="additional-ideas">Additional Ideas</h2>
-<h4 id="guideline-for-transliteration">Guideline for transliteration</h4>
-<p>As I have seen inconsistencies between transliteration and translation, it would be nice if Open Street Map can provide some guidelines about this issue to the contributors. This would make data cleaner from the source level.</p>
+<h4 id="guideline-for-transliteration-for-more-consistency">Guideline for transliteration for more consistency</h4>
+<p>As I have seen inconsistencies between transliteration and translation, it would be nice if Open Street Map can provide some guidelines about this issue to the contributors. Showing a small tip such as &quot;always use translation instead of transliteration when applicable&quot; to the contributors in non-english area map would do the job. This would make data cleaner from the source level. Doing this however might drive some contributors into translate every possible things. Some words like proper name should not be translated though. For example consider the word &quot;Thanon Ratchawithi&quot; (Thanon = road, Ratcha = royal, Withi = way), 100% percent transliteration would be &quot;Thanon Ratchawithi&quot;, while 100% translation would be &quot;Royalway Road&quot; which is not understandable even for Thai people.  We can circumvent this by also giving them some examples of what should be translated and what should not.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>The information in Open Street Map is rich but it is far from complete. As Indian cuisine comes at the third place, I think the distribution of the contributor might not sparse enough. To gather more information, a game like Pokemon Go might help motivating local people to walk around and help completing map in process.</p></body>
+<p>The information in Open Street Map is rich but it is far from complete. As Indian cuisine comes at the third place, I think the distribution of the contributor might not sparse enough. To gather more information, a game like Pokemon Go might be able to help us. If we can create a game similar to Pokemon Go where people have to walk around the city, register and confirm point of interests (ex. by answering question like: is this a restaurant or not?, what food do they sell here?), the app can then collects crowdsourced data and send back to complete the map. The game has to ask questions in a subtle way though such that game is fun enough to play.</p></body>
 </html>
