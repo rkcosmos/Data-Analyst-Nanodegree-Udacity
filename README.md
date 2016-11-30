@@ -2,9 +2,10 @@
 
 This repository contains my projects in Data Analyst Nanodegree.
 
-![](images/UdacityCertificate.pdf?raw=true)
+![](images/UdacityCertificate.png?raw=true)
 
 Courses taken:
+
 1. Intro to Descriptive Statistics
 2. Intro to Inferential Statistics
 3. Intro to Data Science
