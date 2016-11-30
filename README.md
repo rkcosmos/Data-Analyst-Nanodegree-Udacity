@@ -2,7 +2,7 @@
 
 This repository contains my projects in Data Analyst Nanodegree.
 
-![](images/UdacityCertificate.png?raw=true)
+![](UdacityCertificate.png?raw=true)
 
 Courses taken:
 
